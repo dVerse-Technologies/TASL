@@ -1,0 +1,178 @@
+I am designing a modular, large-scale engineering team-building activity: a collaborative marble-run challenge for approximately 10 teams.
+
+PROJECT CONCEPT
+Participants are senior engineering professionals. Each team receives a modular challenge section and must design/assemble a marble pathway that connects to other teams' sections. The final system should transport a steel ball from a common START to a common FINISH through all modules.
+
+VENUE
+Expected usable area is approximately 3,000 sq ft, potentially a large hall/courtyard. The venue may be roughly 50 ft × 50 ft or similar, but exact dimensions are not yet confirmed.
+
+MARBLE
+- Steel bearing balls
+- Approximately 25 mm diameter
+- Bearing-grade steel preferred
+- The marble must roll freely through the pathway.
+
+PATHWAY
+Primary pathway material:
+- 1½-inch Schedule 40 PVC pipe
+- Also potentially 2-inch Schedule 40 PVC
+- Pipes will be pre-cut into approximately 1 m sections for transport and participant assembly.
+- Clear flexible pneumatic tubing may also be available for visually interesting sections.
+- Participants should be able to connect multiple pipe sections without permanent glue.
+- Couplers, unions, T-junctions, Y-junctions, 3-way junctions etc. may be used.
+- Connections must preserve smooth ball flow and avoid snagging.
+
+STRUCTURE
+I initially considered 4040 and 3030 8-mm T-slot aluminium extrusion, pre-cut into 1 m sections, but the cost is proving very high.
+I am therefore investigating cheaper structural alternatives such as:
+- aluminium angle/channel
+- lightweight PVC electrical conduit
+- other lightweight modular framing systems.
+
+The structure must be:
+- lightweight
+- safe for participant handling
+- stable
+- reusable
+- modular
+- quick to assemble
+- capable of supporting elevated PVC marble pathways.
+
+3D PRINTING
+I can 3D-print custom:
+- PVC saddle clamps
+- pipe holders
+- sensor sleeves
+- structural connectors
+- adapters
+- specialized joints
+
+Likely material:
+- PETG
+- black PETG for sensor housings where useful.
+
+ACTIVITY DESIGN
+There will be approximately 10 teams/modules.
+
+Each module should have:
+- a defined marble IN point
+- a defined marble OUT point
+- an engineering challenge
+- enough freedom for participants to design their own solution
+- standardized interfaces so modules can connect.
+
+The challenge should be genuinely interesting to experienced engineers without requiring precision machining, gears, ratchets or complex mechanisms.
+
+Available construction materials should primarily be:
+- PVC pipe
+- clear flexible pneumatic tube
+- lightweight structural members
+- 3D-printed components
+- simple fasteners.
+
+ELECTRONICS
+I am designing approximately 20 independent ESP32 sensor nodes.
+
+Each module may have two measurement points, with each measurement point consisting of:
+- IR LED transmitter
+- IR phototransistor receiver
+
+The two optical beams are placed a known fixed distance apart. When the marble breaks each beam, the ESP32 records timestamps.
+
+This allows:
+velocity = known distance / time between beam interruptions.
+
+Each sensor node is intended to be:
+- self-contained
+- battery powered
+- enclosed in a small 3D-printed PETG housing
+- connected to the venue Wi-Fi
+- removable from the physical marble-run.
+
+NETWORK
+A TP-Link Archer AX53-class Wi-Fi router will create a local, offline Wi-Fi network.
+
+Approximately 20 ESP32 nodes connect over 2.4 GHz Wi-Fi.
+
+A laptop connects to the same local network.
+
+No Internet connection is required.
+
+The laptop runs the central dashboard/GUI.
+
+The system should continue to work entirely locally even if the WAN/Internet connection is disconnected.
+
+POWER
+Each ESP32 node uses a small 1S LiPo battery, approximately:
+- 3.7 V nominal
+- 500 mAh
+
+Each node should include:
+- LiPo charging
+- power switch
+- battery voltage measurement
+- battery status indication.
+
+RGB LED
+Each sensor node will have a 5 mm, 4-pin RGB LED, preferably common cathode, although common anode is also acceptable.
+
+Battery status could be:
+- Green = healthy
+- Yellow = getting low
+- Red = low
+- flashing red = critically low
+
+The ESP32 should measure LiPo voltage using an ADC and voltage divider.
+
+SENSING
+The optical sensor should be a simple IR break-beam system:
+IR LED → air gap → phototransistor.
+
+The 25 mm steel ball interrupts the beam.
+
+Avoid TV-remote-style 38-kHz IR receiver modules; use a bare IR emitter + phototransistor arrangement.
+
+GUI
+The central laptop dashboard should display:
+- modules/nodes
+- ball detected
+- ball passed
+- timestamps
+- measured velocity where appropriate
+- node battery status
+- connectivity/heartbeat status
+- potentially overall elapsed time.
+
+DESIGN PHILOSOPHY
+This is an engineering leadership/team-building event rather than a commercial production machine.
+
+Prioritize:
+1. Safety
+2. Reliability
+3. Ease of participant assembly
+4. Fast setup/reset
+5. Reusability
+6. Low cost
+7. Clear measurement
+8. Interesting engineering constraints.
+
+I want you to act as a systems engineer and help me develop the complete architecture.
+
+Please provide:
+1. Overall system architecture
+2. Physical modular architecture
+3. Standardized module interfaces
+4. Recommended structural material
+5. PVC pathway connection strategy
+6. Sensor architecture
+7. ESP32/network architecture
+8. Power architecture
+9. Battery monitoring strategy
+10. GUI/dashboard architecture
+11. Recommended event workflow
+12. Safety considerations
+13. A practical prototype plan for building and testing 3 modules first
+14. Major technical risks and how to mitigate them
+15. A final recommended architecture that balances cost, reliability and participant experience.
+
+Do not assume aluminium T-slot extrusion is mandatory. Challenge that assumption if a cheaper/lightweight solution is better.

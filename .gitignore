@@ -1,0 +1,34 @@
+# ── Secrets ────────────────────────────────────────────────────────────────
+# Real Wi-Fi credentials and the laptop's LAN IP. Never commit these.
+# secrets.example.h IS committed, as the template.
+firmware/**/secrets.h
+
+# ── Runtime data ───────────────────────────────────────────────────────────
+# The event log is rebuilt on every run and can get large.
+data/
+*.sqlite3
+*.sqlite3-journal
+
+# ── Python ─────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+
+# ── Arduino build output ───────────────────────────────────────────────────
+build/
+*.elf
+*.bin
+*.hex
+*.map
+
+# ── OS / editor cruft ──────────────────────────────────────────────────────
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*~

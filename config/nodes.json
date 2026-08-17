@@ -1,0 +1,34 @@
+{
+  "run_name": "TASL Marble Run",
+
+  "_comment_heartbeat": "A node is marked OFFLINE if no heartbeat arrives within this many seconds. Nodes beat every 2s, so 6s = 3 missed beats.",
+  "heartbeat_timeout_s": 6.0,
+
+  "_comment_nodes": "One entry per ESP32. 'order' defines ball progression START -> FINISH. 'gap_mm' is the distance between IR beam A and beam B on that station, and is the number velocity depends on - measure it, do not assume it.",
+  "nodes": [
+    {
+      "node_id": "NODE01",
+      "label": "Module 1 - Entry",
+      "module": 1,
+      "station": 1,
+      "order": 1,
+      "gap_mm": 100.0
+    },
+    {
+      "node_id": "NODE02",
+      "label": "Module 1 - Exit",
+      "module": 1,
+      "station": 2,
+      "order": 2,
+      "gap_mm": 100.0
+    },
+    {
+      "node_id": "NODE03",
+      "label": "Module 2 - Entry",
+      "module": 2,
+      "station": 1,
+      "order": 3,
+      "gap_mm": 100.0
+    }
+  ]
+}
