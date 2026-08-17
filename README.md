@@ -3,8 +3,13 @@
 A collaborative marble-run built by ~10 teams of senior engineers. A 25 mm
 steel ball travels from a common START to a common FINISH through every team's
 module. Battery-powered ESP32 nodes watch the ball with IR break-beams, time
-it, and report to a laptop running a live dashboard over an offline Wi-Fi
+it, and report to a server running a live dashboard over an offline Wi-Fi
 network.
+
+Alongside the run there is a simulated materials economy: an operator fires
+news events from an admin panel, material prices move, a depot kiosk reprices
+and a stage projector flashes breaking news — all on four screens that stay in
+sync because one server holds the only copy of the state.
 
 ![Node schematic](hardware/schematic-node.svg)
 
@@ -20,6 +25,31 @@ network.
 | 4 | Battery sensing + RGB status LED | in progress |
 | 5 | Two beams per node, real ball velocity | not started |
 | 6 | Replicate across 20 nodes | not started |
+| 7 | Admin panel, depot prices, stage projector | **done** |
+
+---
+
+## The four screens
+
+One server on the **Admin MiniPC**, four pages, four machines.
+
+| Machine | URL | Shows | Who sees it |
+|---|---|---|---|
+| Admin MiniPC | `/admin` | Event triggers, pricing, diagnostics | Operator only |
+| Depot MiniPC | `/depot` | Live BOM prices, hike badge top right | Participants |
+| Stage laptop + projector | `/stage` | Price board, interrupted by news flashes | The room |
+| Build-space MiniPC | `/` | Ball location and speed | Participants |
+
+There are no logins. Screens are separated by URL, and the diagnostics that
+used to sit behind a wrench icon on the public dashboard now live on `/admin`
+only, so participants never see a station misbehaving.
+
+Sync is not a protocol — it is an absence of one. Every page opens the same
+WebSocket and renders the same broadcast, so two boards cannot disagree.
+
+**The full event-day guide is
+[`docs/EVENT_DAY_SCREENS.md`](docs/EVENT_DAY_SCREENS.md)** — running order,
+kiosk-mode commands, what to press when, and what survives a restart.
 
 ---
 
@@ -43,7 +73,14 @@ python run_server.py
 python sim/run_mocks.py
 ```
 
-Open <http://localhost:8000>.
+Then open any of the four screens:
+
+| | |
+|---|---|
+| <http://localhost:8000/admin> | triggers, pricing, diagnostics |
+| <http://localhost:8000/depot> | live material prices |
+| <http://localhost:8000/stage> | projector — click **CLICK TO ARM** once |
+| <http://localhost:8000/> | ball location and speed |
 
 With real hardware, skip terminal 2 and power the nodes instead.
 
@@ -67,15 +104,26 @@ It changes nothing — it prints the commands you need.
 ## Repo map
 
 ```
-server/          FastAPI dashboard server
+server/          FastAPI server for all four screens
   protocol.py      THE CONTRACT — exact JSON a node sends. Firmware must match.
   store.py         Node state, run state, SQLite logging
+  market.py        Prices, news events, the stage flash. Compounding, rounds up.
   diagnostics.py   Fault rules: what's wrong and what to check
-  app.py           HTTP + WebSocket endpoints
-  static/          Dashboard UI (plain HTML/CSS/JS, no build step)
+  app.py           HTTP + WebSocket endpoints, the four page routes
+  static/          All four UIs (plain HTML/CSS/JS, no build step)
+    index.html/app.js    ball tracking      → /
+    depot.html           material prices    → /depot
+    stage.html/stage.js  projector          → /stage
+    admin.html/admin.js  operator console   → /admin
+    bus.js               shared WebSocket client for the three new screens
+    board.js/board.css   the price board, shared by depot and stage
+    media/               drop breaking-news .mp4 clips here (optional)
 
 sim/             Simulated ESP32 nodes — speak the identical protocol
-config/          nodes.json — node registry, order, gap_mm per station
+config/
+  nodes.json       node registry, order, gap_mm per station
+  market.json      the 34 depot lines and the two news events.
+                   GENERATED FROM THE BOM — see docs/gameplan/. Never the source.
 
 firmware/
   tasl_node_conn_test/   Main node firmware (Wi-Fi + reporting)
@@ -89,9 +137,19 @@ hardware/
   schematic-node.svg     Full node schematic
   *.SLDPRT *.STL *.gcode Enclosure CAD and print files
 
-openmarket/      TASL coin CAD/DXF for the activity's internal economy
-tools/           preflight.ps1 (Windows) · preflight.sh (macOS)
-EVENT_DAY_MACOS.md   Event-day setup for the MacBook
+openmarket/      Kasu coin CAD/DXF for the activity's internal economy
+tools/
+  preflight.ps1 / preflight.sh   pre-event checks (Windows / macOS)
+  check_bom.py                   config/market.json vs the BOM. Run after edits.
+
+docs/EVENT_DAY_SCREENS.md   THE event-day guide: four screens, running order
+docs/gameplan/              THE SOURCE OF TRUTH for materials, prices and money
+  02-BOM/                     master materials list, basekits, procurement
+  03-Economy/                 coins, trade rules, God Mode levers
+  06-Sizing/                  pipe standardisation, ball and bend physics
+  07-Team-Guides/             the printed participant books
+  data/                       materials.json, events.json, coins.json, teams.json
+EVENT_DAY_MACOS.md          Host setup if a MacBook runs the server instead
 ```
 
 **Where docs disagree,** [`hardware/DECISIONS.md`](hardware/DECISIONS.md) and
@@ -182,13 +240,18 @@ dashboard needed no changes when real hardware arrived.
 
 ## Troubleshooting
 
-The wrench icon (top right of the dashboard) opens a panel that says what's
-wrong per node and what to check, ordered by what's quickest and most likely.
-A small red dot appears when there's something to look at — no counts, no
-blinking, because the audience is watching the same screen.
+The bottom of `/admin` says what's wrong per node and what to check, ordered by
+what's quickest and most likely. It distinguishes the cases that matter: a node
+that *died* versus one that was *never configured correctly* versus one that's
+*online but seeing nothing*.
 
-It distinguishes the cases that matter: a node that *died* versus one that was
-*never configured correctly* versus one that's *online but seeing nothing*.
+It is on `/admin` and nowhere else. Participants stand in front of the
+build-space dashboard, and a flaky station is the operator's problem, not
+theirs — so that screen shows the ball and nothing else.
+
+The **SCREENS** panel on `/admin` is the other half of this: it shows which of
+the four displays are actually connected, so "is the projector still alive" is
+answered without walking the hall.
 
 ---
 

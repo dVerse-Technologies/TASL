@@ -8,6 +8,9 @@
  *
  * If the socket drops we reconnect automatically. At a live event the laptop
  * lid gets closed, Wi-Fi hiccups, someone reloads - it has to just come back.
+ *
+ * This is the screen participants stand in front of, so it shows the ball and
+ * nothing else. Troubleshooting lives on /admin, out of their sight.
  */
 
 (() => {
@@ -258,6 +261,9 @@
     ws.onopen = () => {
       retry = 500;
       el.linkDot.className = "dot up";
+      // Tell the server which screen this is, so the admin panel can see
+      // whether the build-space monitor is still connected.
+      try { ws.send(JSON.stringify({ hello: "live" })); } catch { /* already closed */ }
     };
 
     ws.onclose = () => {
@@ -324,145 +330,6 @@
     }
   }
 
-  /* ----------------------------------------------------------- diagnostics */
-
-  // Polled rather than pushed. The rules read accumulated counters, not single
-  // events, so there is nothing to gain from recomputing them on every packet.
-  let diagTimer = null;
-
-  async function pollDiagnostics() {
-    try {
-      const r = await fetch("/api/diagnostics");
-      if (!r.ok) return;
-      const d = await r.json();
-      updateDot(d);
-      if (!$("view-diag").hidden) renderDiagnostics(d);
-    } catch (_) {
-      /* server restarting; the next tick will catch up */
-    }
-  }
-
-  // One small static dot, no count and no blinking. The audience is looking at
-  // this screen; the operator needs to know there is something to check, and
-  // nobody else needs to know how much. The detail is one click away.
-  function updateDot(d) {
-    const dot = $("diag-dot");
-    dot.hidden = (d.critical + d.warnings) === 0;
-    dot.title = `${d.critical} critical, ${d.warnings} warning(s)`;
-  }
-
-  // Which findings the operator has opened. Kept across the 3s repoll so
-  // reading a long explanation doesn't get yanked shut under you.
-  const expanded = new Set();
-  let lastDiagSig = null;
-
-  function renderDiagnostics(d, force = false) {
-    // Skip the repaint entirely when nothing changed - otherwise the panel
-    // flickers every 3 seconds while you are trying to read it.
-    const sig = JSON.stringify(d.nodes);
-    if (!force && sig === lastDiagSig) return;
-    lastDiagSig = sig;
-
-    const sum = $("diag-summary");
-    if (!d.critical && !d.warnings) {
-      sum.innerHTML = `<div class="sum-pill ok">ALL STATIONS HEALTHY</div>`;
-    } else {
-      const bits = [];
-      if (d.critical) bits.push(`<div class="sum-pill critical">${d.critical} CRITICAL</div>`);
-      if (d.warnings) bits.push(`<div class="sum-pill warning">${d.warnings} WARNING${d.warnings > 1 ? "S" : ""}</div>`);
-      sum.innerHTML = bits.join("");
-    }
-
-    $("diag-list").innerHTML = d.nodes.map(diagNodeHtml).join("");
-  }
-
-  function diagNodeHtml(n) {
-    const healthy = n.findings.length === 1 && n.findings[0].code === "OK";
-
-    // A healthy station collapses to a single line. At an event the eye should
-    // land on the broken ones, not wade past the working ones.
-    if (healthy) {
-      return `
-        <section class="diag-node ok-row">
-          <span class="diag-node-id">${n.node_id}</span>
-          <span class="diag-node-label">${n.label}</span>
-          <span class="ok-tag">OK</span>
-        </section>`;
-    }
-
-    return `
-      <section class="diag-node ${n.worst}">
-        <header class="diag-node-head">
-          <span class="diag-node-id">${n.node_id}</span>
-          <span class="diag-node-label">${n.label}</span>
-          <span class="diag-node-state ${n.online ? "online" : "offline"}">
-            ${n.online ? "ONLINE" : "OFFLINE"}
-          </span>
-        </header>
-        ${n.findings.map((f) => findingHtml(n.node_id, f)).join("")}
-      </section>`;
-  }
-
-  // Collapsed by default: severity + one line saying what is wrong. Everything
-  // else is behind EXPLAIN.
-  function findingHtml(nodeId, f) {
-    const key = `${nodeId}:${f.code}`;
-    const open = expanded.has(key);
-    const checks = f.checks.length
-      ? `<ol class="checks">${f.checks.map((c) => `<li>${c}</li>`).join("")}</ol>` : "";
-
-    return `
-      <div class="finding ${f.severity}${open ? " open" : ""}">
-        <div class="finding-head">
-          <span class="sev">${f.severity.toUpperCase()}</span>
-          <span class="finding-title">${f.title}</span>
-          <button class="explain-btn" data-key="${key}">
-            ${open ? "HIDE" : "EXPLAIN"}
-          </button>
-        </div>
-        <div class="finding-body">
-          <p class="finding-detail">${f.detail}</p>
-          ${checks}
-        </div>
-      </div>`;
-  }
-
-  // Delegated, so the handlers survive every repoll.
-  $("diag-list").addEventListener("click", (e) => {
-    const btn = e.target.closest(".explain-btn");
-    if (!btn) return;
-    const key = btn.dataset.key;
-    if (expanded.has(key)) expanded.delete(key);
-    else expanded.add(key);
-
-    const finding = btn.closest(".finding");
-    finding.classList.toggle("open", expanded.has(key));
-    btn.textContent = expanded.has(key) ? "HIDE" : "EXPLAIN";
-  });
-
-  /* ------------------------------------------------------- view switching */
-
-  function showDiag(on) {
-    $("view-live").hidden = on;
-    $("view-diag").hidden = !on;
-    $("btn-diag").classList.toggle("active", on);
-    if (on) pollDiagnostics(); // don't wait up to 3s for the first paint
-  }
-
-  $("btn-diag").onclick = () => showDiag($("view-diag").hidden);
-  $("btn-diag-close").onclick = () => showDiag(false);
-  $("btn-diag-clear").onclick = async () => {
-    if (!confirm("Clear the health counters?\n\nDo this after you have physically " +
-                 "fixed something, so you can see whether the fault comes back.")) return;
-    await fetch("/api/diagnostics/clear", { method: "POST" });
-    expanded.clear();
-    lastDiagSig = null; // force a repaint
-    pollDiagnostics();
-  };
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") showDiag(false);
-  });
-
   /* -------------------------------------------------------------- controls */
 
   const post = (path) => fetch(path, { method: "POST" });
@@ -476,9 +343,4 @@
 
   connect();
   requestAnimationFrame(tickElapsed);
-
-  // Always polling, even on the Live tab - that is what keeps the warning
-  // badge on the Diagnostics tab honest without you having to go looking.
-  pollDiagnostics();
-  diagTimer = setInterval(pollDiagnostics, 3000);
 })();

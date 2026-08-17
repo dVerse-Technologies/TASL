@@ -4,10 +4,19 @@
 firmware/**/secrets.h
 
 # ── Runtime data ───────────────────────────────────────────────────────────
-# The event log is rebuilt on every run and can get large.
-data/
+# The event log is rebuilt on every run and can get large. data/ also holds
+# market_state.json, which is live event state, not source.
+# Anchored to the repo root on purpose: a bare "data/" would also swallow
+# docs/gameplan/data/, which is the BOM source of truth and must be committed.
+/data/
 *.sqlite3
 *.sqlite3-journal
+
+# ── Breaking-news clips ────────────────────────────────────────────────────
+# Video belongs wherever you keep the event's media, not in the repo.
+# server/static/media/README.md IS committed, as the instructions.
+server/static/media/*.mp4
+server/static/media/*.webm
 
 # ── Python ─────────────────────────────────────────────────────────────────
 __pycache__/

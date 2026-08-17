@@ -1,0 +1,291 @@
+/* The price board, shared by the depot kiosk and the stage projector.
+   Same stylesheet on both so the two screens can never look like they are
+   quoting different markets.
+
+   Sizing is in vh/vw throughout, not pixels. The depot runs on a monitor at
+   arm's length and the stage on a projector across a hall, and neither of them
+   should need a per-machine zoom setting on the morning of the event. */
+
+:root {
+  /* Newspaper columns. The BOM is 34 sellable lines in six groups and the
+     screens cannot scroll, so the list is laid out across columns and the type
+     is sized to whatever fits. More columns means fewer lines per column and
+     therefore BIGGER type, not smaller - three is the point where the longest
+     material name still fits on one line at 16:9. */
+  --cols:    3;
+
+  --bg:      #0b0e14;
+  --panel:   #141922;
+  --panel-2: #1b2130;
+  --line:    #2a3244;
+  --text:    #e6ebf5;
+  --muted:   #8b97ad;
+
+  --go:      #22d37f;
+  --warn:    #f5c542;
+  --bad:     #ff5c5c;
+  --live:    #46b4ff;
+  --hike:    #ff6b3d;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;              /* kiosk: never a scrollbar */
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.board {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --------------------------------------------------------------- board head */
+
+.board-head {
+  display: flex;
+  align-items: center;
+  gap: 2vw;
+  padding: 1.6vh 2vw;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+
+.board-title { flex: 1; line-height: 1.15; }
+.board-title h1 {
+  margin: 0;
+  font-size: clamp(20px, 3.2vh, 46px);
+  letter-spacing: 0.06em;
+  font-weight: 700;
+}
+.board-title .sub {
+  font-size: clamp(11px, 1.5vh, 20px);
+  color: var(--muted);
+  letter-spacing: 0.18em;
+}
+
+.link-dot {
+  width: 1.4vh; height: 1.4vh; min-width: 10px; min-height: 10px;
+  border-radius: 50%;
+  background: var(--muted);
+  flex: none;
+}
+.link-dot.up   { background: var(--live); }
+.link-dot.down { background: var(--bad); animation: blink 1s steps(2) infinite; }
+
+@keyframes blink { 50% { opacity: 0.25; } }
+
+/* The hike badge. Top right, as loud as the prices themselves - this is the
+   single number a participant walking up to the depot needs to read first. */
+.hike {
+  flex: none;
+  text-align: right;
+  padding: 1vh 1.8vw;
+  border-radius: 1.2vh;
+  border: 2px solid var(--line);
+  background: var(--panel-2);
+  line-height: 1.05;
+}
+.hike .k {
+  display: block;
+  font-size: clamp(10px, 1.4vh, 18px);
+  letter-spacing: 0.2em;
+  color: var(--muted);
+}
+.hike .v {
+  display: block;
+  font-size: clamp(26px, 6vh, 90px);
+  font-weight: 800;
+}
+
+.hike.flat .v { color: var(--muted); }
+
+.hike.up {
+  border-color: var(--hike);
+  background: rgba(255, 107, 61, 0.14);
+}
+.hike.up .k { color: var(--hike); }
+.hike.up .v { color: var(--hike); }
+
+.hike.down {
+  border-color: var(--go);
+  background: rgba(34, 211, 127, 0.12);
+}
+.hike.down .k, .hike.down .v { color: var(--go); }
+
+/* Fires once whenever the total changes, so a price move is impossible to miss
+   even if nobody happened to be looking at the moment it landed. */
+.hike.bump { animation: bump 900ms ease-out; }
+@keyframes bump {
+  0%   { transform: scale(1); }
+  18%  { transform: scale(1.14); }
+  100% { transform: scale(1); }
+}
+
+/* ------------------------------------------------------------- price groups */
+
+.board-body {
+  flex: 1;
+  min-height: 0;
+  padding: 1.2vh 2vw 1vh;
+  /* Clipped rather than scrolled. These are kiosks: if a future BOM overflows
+     it should be obvious on the rehearsal run, not hidden behind a scrollbar
+     nobody thinks to drag while a queue is forming. */
+  overflow: hidden;
+}
+
+/* The board never scrolls, so the whole list has to fit whatever length it is.
+   --rows is set by board.js from the real item and group counts, and the
+   second term shrinks the type to suit. 30vh x cols / rows is the measured
+   fit: a row occupies about 2.45x its font size, and the groups balance across
+   the columns so each column carries roughly rows/cols lines. */
+.groups {
+  height: 100%;
+  column-count: var(--cols, 3);
+  column-gap: 2.4vw;
+  column-fill: balance;
+  font-size: min(clamp(11px, 2.3vh, 34px), calc(30vh * var(--cols, 3) / var(--rows, 40)));
+}
+
+/* A group must never be split down the middle of a column - the heading and
+   its lines are how someone finds a part, and half of PATHWAY CLOSED at the
+   bottom of one column is worse than a ragged column edge. */
+.group {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin: 0 0 1.1em;
+}
+
+.group-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+  margin: 0 0 0.2em;
+  padding-bottom: 0.15em;
+  border-bottom: 2px solid var(--line);
+}
+.g-name {
+  font-size: 0.9em;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--live);
+}
+.g-note {
+  font-size: 0.58em;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* name (+unit) · buyback · was · price. Everything but the name is sized to
+   its content so the name gets the rest and can ellipsis rather than wrap. */
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  align-items: baseline;
+  column-gap: 0.55em;
+  padding: 0.17em 0;
+  border-bottom: 1px solid rgba(42, 50, 68, 0.55);
+  white-space: nowrap;
+}
+
+.row .name { overflow: hidden; text-overflow: ellipsis; }
+
+/* All in em, so they track the row size as the board shrinks. */
+.row .unit { color: var(--muted); font-size: 0.6em; margin-left: 0.5em; }
+
+/* What the depot pays to take it back: unused / cut but usable. Constants -
+   they are against the base price and never move with the market, which is
+   what stops teams buying at base and selling into wartime prices. */
+.row .buy {
+  color: var(--muted);
+  font-size: 0.58em;
+  letter-spacing: 0.04em;
+}
+body[data-role="stage"] .row .buy { display: none; }
+
+/* Struck through, dimmed, and noticeably smaller. Reference information for
+   "how much did this move", not a number to read a price off. */
+.row .base {
+  color: var(--muted);
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  font-size: 0.68em;
+  min-width: 2.4em;
+  text-align: right;
+}
+
+.row .live { font-weight: 800; min-width: 3.1em; text-align: right; }
+.row .live .sym { color: var(--muted); font-weight: 600; margin-right: 0.3em; }
+
+.row.changed .live { color: var(--hike); }
+.row.cheaper .live { color: var(--go); }
+.row.changed .base, .row.cheaper .base { opacity: 0.75; }
+
+/* Row-level flash on the exact rows whose number just moved. */
+.row.moved { animation: moved 1.6s ease-out; }
+@keyframes moved {
+  0%   { background: rgba(255, 107, 61, 0.42); }
+  100% { background: transparent; }
+}
+
+/* ------------------------------------------------------------------- foot */
+
+.board-foot {
+  display: flex;
+  align-items: center;
+  gap: 1.5vw;
+  padding: 0.9vh 2vw;
+  background: var(--panel);
+  border-top: 1px solid var(--line);
+  font-size: clamp(10px, 1.5vh, 20px);
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+.board-foot .spacer { flex: 1; }
+.board-foot .tag {
+  color: var(--hike);
+  font-weight: 700;
+}
+/* The buyback rule and the facilitator-only lines. Both exist to settle an
+   argument at the counter without anyone having to open a book. */
+.board-foot .foot-rule,
+.board-foot .foot-notsold {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.board-foot .foot-rule b { color: var(--text); font-weight: 700; }
+
+/* Shown over the board when the socket is down. Says which machine is at
+   fault, because at that moment the useful question is "is it me or the
+   server", and the answer decides who walks where. */
+.offline-veil {
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-content: center;
+  text-align: center;
+  background: rgba(11, 14, 20, 0.9);
+  z-index: 50;
+}
+.offline-veil.on { display: grid; }
+.offline-veil h2 {
+  margin: 0 0 1vh;
+  font-size: clamp(22px, 5vh, 64px);
+  color: var(--bad);
+  letter-spacing: 0.06em;
+}
+.offline-veil p {
+  margin: 0;
+  font-size: clamp(13px, 2.2vh, 30px);
+  color: var(--muted);
+}

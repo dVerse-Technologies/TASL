@@ -1,0 +1,1122 @@
+{
+  "sizing": {
+    "structural": "25mm OD, 15kg",
+    "pathwayClosed": "32mm OD, 10kg (ID approx 28mm)",
+    "pathwayOpen": "76mm split lengthways, SWR Type B",
+    "notation": "pipe OD in mm; kg = pressure class / wall thickness"
+  },
+  "rules": {
+    "depotStock": "greater of 1.5x basekit, or enough for total availability to reach 2x estimated consumption",
+    "pricing": "all base prices are multiples of 20 so the 50% buyback is payable in coins",
+    "buyback": "always against base price, never the live price",
+    "rounding": "live prices round up to the nearest 10 after each event"
+  },
+  "totals": {
+    "basekitPieces": 699,
+    "depotPieces": 1192
+  },
+  "items": [
+    {
+      "id": "a3-sheets",
+      "name": "A3 sheets",
+      "group": "consumables",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 20,
+        "war": 30,
+        "tariff": 40
+      },
+      "buyback": {
+        "fresh": 20,
+        "modified": 10
+      },
+      "basekitTotal": 20,
+      "depotStock": 30,
+      "totalToProcure": 50,
+      "kitByTeam": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "id": "cardboard-blank-sheet",
+      "name": "Cardboard blank (sheet)",
+      "group": "consumables",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 120,
+        "war": 150,
+        "tariff": 200
+      },
+      "buyback": {
+        "fresh": 120,
+        "modified": 60
+      },
+      "basekitTotal": 23,
+      "depotStock": 67,
+      "totalToProcure": 90,
+      "kitByTeam": [
+        2,
+        4,
+        0,
+        2,
+        8,
+        1,
+        0,
+        3,
+        0,
+        3
+      ]
+    },
+    {
+      "id": "dowel-pack",
+      "name": "Dowel pack",
+      "group": "consumables",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 100,
+        "war": 120,
+        "tariff": 160
+      },
+      "buyback": {
+        "fresh": 100,
+        "modified": 50
+      },
+      "basekitTotal": 3,
+      "depotStock": 9,
+      "totalToProcure": 12,
+      "kitByTeam": [
+        2,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "duct-tape",
+      "name": "Duct tape",
+      "group": "consumables",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 160,
+        "war": 200,
+        "tariff": 260
+      },
+      "buyback": {
+        "fresh": 160,
+        "modified": 80
+      },
+      "basekitTotal": 6,
+      "depotStock": 34,
+      "totalToProcure": 40,
+      "kitByTeam": [
+        1,
+        1,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "id": "elastic-cord-set",
+      "name": "Elastic cord set",
+      "group": "consumables",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 140,
+        "war": 170,
+        "tariff": 230
+      },
+      "buyback": {
+        "fresh": 140,
+        "modified": 70
+      },
+      "basekitTotal": 2,
+      "depotStock": 6,
+      "totalToProcure": 8,
+      "kitByTeam": [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "fevicol",
+      "name": "Fevicol",
+      "group": "consumables",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 200,
+        "war": 240,
+        "tariff": 320
+      },
+      "buyback": {
+        "fresh": 200,
+        "modified": 100
+      },
+      "basekitTotal": 5,
+      "depotStock": 15,
+      "totalToProcure": 20,
+      "kitByTeam": [
+        0,
+        1,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "id": "funnel",
+      "name": "Funnel",
+      "group": "consumables",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 200,
+        "war": 240,
+        "tariff": 320
+      },
+      "buyback": {
+        "fresh": 200,
+        "modified": 100
+      },
+      "basekitTotal": 0,
+      "depotStock": 8,
+      "totalToProcure": 8,
+      "kitByTeam": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "narrow-bucket-paper-cup",
+      "name": "Narrow bucket / paper cup",
+      "group": "consumables",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 100,
+        "war": 120,
+        "tariff": 160
+      },
+      "buyback": {
+        "fresh": 100,
+        "modified": 50
+      },
+      "basekitTotal": 2,
+      "depotStock": 3,
+      "totalToProcure": 5,
+      "kitByTeam": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "id": "permanent-pen-tip-marker",
+      "name": "Permanent pen tip marker",
+      "group": "consumables",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 60,
+        "war": 80,
+        "tariff": 110
+      },
+      "buyback": {
+        "fresh": 60,
+        "modified": 30
+      },
+      "basekitTotal": 10,
+      "depotStock": 15,
+      "totalToProcure": 25,
+      "kitByTeam": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "rubber-mallet",
+      "name": "Rubber mallet",
+      "group": "consumables",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 300,
+        "war": 360,
+        "tariff": 470
+      },
+      "buyback": {
+        "fresh": 300,
+        "modified": 150
+      },
+      "basekitTotal": 10,
+      "depotStock": 15,
+      "totalToProcure": 25,
+      "kitByTeam": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "scissors",
+      "name": "Scissors",
+      "group": "consumables",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 240,
+        "war": 290,
+        "tariff": 380
+      },
+      "buyback": {
+        "fresh": 240,
+        "modified": 120
+      },
+      "basekitTotal": 4,
+      "depotStock": 16,
+      "totalToProcure": 20,
+      "kitByTeam": [
+        0,
+        1,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "zip-ties-pack-of-10",
+      "name": "Zip ties (pack of 10)",
+      "group": "consumables",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 80,
+        "war": 100,
+        "tariff": 130
+      },
+      "buyback": {
+        "fresh": 80,
+        "modified": 40
+      },
+      "basekitTotal": 26,
+      "depotStock": 39,
+      "totalToProcure": 65,
+      "kitByTeam": [
+        1,
+        4,
+        1,
+        2,
+        4,
+        1,
+        6,
+        3,
+        2,
+        2
+      ]
+    },
+    {
+      "id": "ball-12-mm",
+      "name": "Ball 12 mm",
+      "group": "facilitator-only",
+      "sold": false,
+      "moq": null,
+      "price": null,
+      "buyback": null,
+      "basekitTotal": 6,
+      "depotStock": 0,
+      "totalToProcure": 6,
+      "kitByTeam": [
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "id": "ball-25-mm",
+      "name": "Ball 25 mm",
+      "group": "facilitator-only",
+      "sold": false,
+      "moq": null,
+      "price": null,
+      "buyback": null,
+      "basekitTotal": 6,
+      "depotStock": 0,
+      "totalToProcure": 6,
+      "kitByTeam": [
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "flexible-borewell-hose-1m",
+      "name": "Flexible borewell hose, 1m",
+      "group": "flex-&-friction",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 300,
+        "war": 360,
+        "tariff": 470
+      },
+      "buyback": {
+        "fresh": 300,
+        "modified": 150
+      },
+      "basekitTotal": 5,
+      "depotStock": 11,
+      "totalToProcure": 16,
+      "kitByTeam": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        5,
+        0
+      ]
+    },
+    {
+      "id": "split-foam-insulation-1m",
+      "name": "Split foam insulation, 1m",
+      "group": "flex-&-friction",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 120,
+        "war": 150,
+        "tariff": 200
+      },
+      "buyback": {
+        "fresh": 120,
+        "modified": 60
+      },
+      "basekitTotal": 6,
+      "depotStock": 10,
+      "totalToProcure": 16,
+      "kitByTeam": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        4,
+        0
+      ]
+    },
+    {
+      "id": "32mm-25mm-reducer-bush",
+      "name": "32mm × 25mm reducer bush",
+      "group": "pathway-closed",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 120,
+        "war": 150,
+        "tariff": 200
+      },
+      "buyback": {
+        "fresh": 120,
+        "modified": 60
+      },
+      "basekitTotal": 4,
+      "depotStock": 12,
+      "totalToProcure": 16,
+      "kitByTeam": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        4,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "32mm-bend-45",
+      "name": "32mm bend 45°",
+      "group": "pathway-closed",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 180,
+        "war": 220,
+        "tariff": 290
+      },
+      "buyback": {
+        "fresh": 180,
+        "modified": 90
+      },
+      "basekitTotal": 5,
+      "depotStock": 25,
+      "totalToProcure": 30,
+      "kitByTeam": [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "32mm-bend-90-long-radius",
+      "name": "32mm bend 90° (long radius)",
+      "group": "pathway-closed",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 300,
+        "war": 360,
+        "tariff": 470
+      },
+      "buyback": {
+        "fresh": 300,
+        "modified": 150
+      },
+      "basekitTotal": 4,
+      "depotStock": 32,
+      "totalToProcure": 36,
+      "kitByTeam": [
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "id": "32mm-coupler",
+      "name": "32mm coupler",
+      "group": "pathway-closed",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 60,
+        "war": 80,
+        "tariff": 110
+      },
+      "buyback": {
+        "fresh": 60,
+        "modified": 30
+      },
+      "basekitTotal": 10,
+      "depotStock": 30,
+      "totalToProcure": 40,
+      "kitByTeam": [
+        2,
+        2,
+        0,
+        0,
+        0,
+        0,
+        6,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "32mm-elbow-90-short-radius",
+      "name": "32mm elbow 90° (short radius)",
+      "group": "pathway-closed",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 100,
+        "war": 120,
+        "tariff": 160
+      },
+      "buyback": {
+        "fresh": 100,
+        "modified": 50
+      },
+      "basekitTotal": 20,
+      "depotStock": 30,
+      "totalToProcure": 50,
+      "kitByTeam": [
+        4,
+        4,
+        2,
+        2,
+        0,
+        1,
+        0,
+        2,
+        3,
+        2
+      ]
+    },
+    {
+      "id": "32mm-end-cap",
+      "name": "32mm end cap",
+      "group": "pathway-closed",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 40,
+        "war": 50,
+        "tariff": 70
+      },
+      "buyback": {
+        "fresh": 40,
+        "modified": 20
+      },
+      "basekitTotal": 10,
+      "depotStock": 15,
+      "totalToProcure": 25,
+      "kitByTeam": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        2,
+        1,
+        0,
+        2
+      ]
+    },
+    {
+      "id": "32mm-pipe-1m",
+      "name": "32mm pipe, 1m",
+      "group": "pathway-closed",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 200,
+        "war": 240,
+        "tariff": 320
+      },
+      "buyback": {
+        "fresh": 200,
+        "modified": 100
+      },
+      "basekitTotal": 30,
+      "depotStock": 45,
+      "totalToProcure": 75,
+      "kitByTeam": [
+        2,
+        4,
+        4,
+        3,
+        2,
+        1,
+        0,
+        3,
+        3,
+        8
+      ]
+    },
+    {
+      "id": "32mm-tee",
+      "name": "32mm tee",
+      "group": "pathway-closed",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 140,
+        "war": 170,
+        "tariff": 230
+      },
+      "buyback": {
+        "fresh": 140,
+        "modified": 70
+      },
+      "basekitTotal": 10,
+      "depotStock": 15,
+      "totalToProcure": 25,
+      "kitByTeam": [
+        2,
+        1,
+        1,
+        1,
+        0,
+        1,
+        2,
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "id": "32mm-y-junction",
+      "name": "32mm Y junction",
+      "group": "pathway-closed",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 220,
+        "war": 270,
+        "tariff": 360
+      },
+      "buyback": {
+        "fresh": 220,
+        "modified": 110
+      },
+      "basekitTotal": 2,
+      "depotStock": 4,
+      "totalToProcure": 6,
+      "kitByTeam": [
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "76mm-split-bend-90-swr-type-b",
+      "name": "76mm split bend 90° (SWR Type B)",
+      "group": "pathway-open",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 240,
+        "war": 290,
+        "tariff": 380
+      },
+      "buyback": {
+        "fresh": 240,
+        "modified": 120
+      },
+      "basekitTotal": 6,
+      "depotStock": 9,
+      "totalToProcure": 15,
+      "kitByTeam": [
+        0,
+        0,
+        2,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        2
+      ]
+    },
+    {
+      "id": "76mm-split-channel-1m-swr-type-b",
+      "name": "76mm split channel, 1m (SWR Type B)",
+      "group": "pathway-open",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 200,
+        "war": 240,
+        "tariff": 320
+      },
+      "buyback": {
+        "fresh": 200,
+        "modified": 100
+      },
+      "basekitTotal": 10,
+      "depotStock": 15,
+      "totalToProcure": 25,
+      "kitByTeam": [
+        0,
+        0,
+        3,
+        1,
+        1,
+        0,
+        0,
+        2,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sensor-module",
+      "name": "Sensor module",
+      "group": "special",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 200,
+        "war": 240,
+        "tariff": 320
+      },
+      "buyback": {
+        "fresh": 200,
+        "modified": 100
+      },
+      "basekitTotal": 2,
+      "depotStock": 3,
+      "totalToProcure": 5,
+      "kitByTeam": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "id": "25mm-coupler",
+      "name": "25mm coupler",
+      "group": "structural",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 20,
+        "war": 30,
+        "tariff": 40
+      },
+      "buyback": {
+        "fresh": 20,
+        "modified": 10
+      },
+      "basekitTotal": 34,
+      "depotStock": 51,
+      "totalToProcure": 85,
+      "kitByTeam": [
+        3,
+        3,
+        8,
+        3,
+        3,
+        1,
+        6,
+        3,
+        2,
+        2
+      ]
+    },
+    {
+      "id": "25mm-elbow-90",
+      "name": "25mm elbow 90°",
+      "group": "structural",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 40,
+        "war": 50,
+        "tariff": 70
+      },
+      "buyback": {
+        "fresh": 40,
+        "modified": 20
+      },
+      "basekitTotal": 34,
+      "depotStock": 51,
+      "totalToProcure": 85,
+      "kitByTeam": [
+        5,
+        2,
+        6,
+        3,
+        3,
+        1,
+        4,
+        4,
+        3,
+        3
+      ]
+    },
+    {
+      "id": "25mm-end-cap",
+      "name": "25mm end cap",
+      "group": "structural",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 20,
+        "war": 30,
+        "tariff": 40
+      },
+      "buyback": {
+        "fresh": 20,
+        "modified": 10
+      },
+      "basekitTotal": 34,
+      "depotStock": 51,
+      "totalToProcure": 85,
+      "kitByTeam": [
+        4,
+        3,
+        8,
+        3,
+        3,
+        1,
+        2,
+        4,
+        3,
+        3
+      ]
+    },
+    {
+      "id": "25mm-four-way-corner",
+      "name": "25mm four-way corner",
+      "group": "structural",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 80,
+        "war": 100,
+        "tariff": 130
+      },
+      "buyback": {
+        "fresh": 80,
+        "modified": 40
+      },
+      "basekitTotal": 17,
+      "depotStock": 26,
+      "totalToProcure": 43,
+      "kitByTeam": [
+        4,
+        3,
+        4,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        3
+      ]
+    },
+    {
+      "id": "25mm-pipe-1m",
+      "name": "25mm pipe, 1m",
+      "group": "structural",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 60,
+        "war": 80,
+        "tariff": 110
+      },
+      "buyback": {
+        "fresh": 60,
+        "modified": 30
+      },
+      "basekitTotal": 154,
+      "depotStock": 231,
+      "totalToProcure": 385,
+      "kitByTeam": [
+        20,
+        18,
+        24,
+        14,
+        14,
+        6,
+        8,
+        16,
+        14,
+        20
+      ]
+    },
+    {
+      "id": "25mm-saddle-clamp",
+      "name": "25mm saddle clamp",
+      "group": "structural",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 40,
+        "war": 50,
+        "tariff": 70
+      },
+      "buyback": {
+        "fresh": 40,
+        "modified": 20
+      },
+      "basekitTotal": 60,
+      "depotStock": 90,
+      "totalToProcure": 150,
+      "kitByTeam": [
+        6,
+        4,
+        5,
+        5,
+        4,
+        2,
+        14,
+        6,
+        5,
+        9
+      ]
+    },
+    {
+      "id": "25mm-tee",
+      "name": "25mm tee",
+      "group": "structural",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 40,
+        "war": 50,
+        "tariff": 70
+      },
+      "buyback": {
+        "fresh": 40,
+        "modified": 20
+      },
+      "basekitTotal": 51,
+      "depotStock": 77,
+      "totalToProcure": 128,
+      "kitByTeam": [
+        8,
+        4,
+        8,
+        5,
+        5,
+        2,
+        4,
+        6,
+        5,
+        4
+      ]
+    },
+    {
+      "id": "25mm-three-way-corner",
+      "name": "25mm three-way corner",
+      "group": "structural",
+      "sold": true,
+      "moq": 1,
+      "price": {
+        "base": 60,
+        "war": 80,
+        "tariff": 110
+      },
+      "buyback": {
+        "fresh": 60,
+        "modified": 30
+      },
+      "basekitTotal": 68,
+      "depotStock": 102,
+      "totalToProcure": 170,
+      "kitByTeam": [
+        8,
+        6,
+        12,
+        6,
+        6,
+        2,
+        10,
+        6,
+        5,
+        7
+      ]
+    }
+  ]
+}

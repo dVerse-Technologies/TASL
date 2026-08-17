@@ -1,0 +1,356 @@
+{
+  "finalGoal": "Both balls launched at the same time reach the buckets at the same time",
+  "paths": {
+    "A": {
+      "ball": "12 mm",
+      "teams": [
+        1,
+        2,
+        4,
+        6,
+        8,
+        10
+      ]
+    },
+    "B": {
+      "ball": "25 mm",
+      "teams": [
+        1,
+        3,
+        5,
+        7,
+        9,
+        10
+      ]
+    }
+  },
+  "teams": [
+    {
+      "team": 1,
+      "challenge": "Launch",
+      "goal": "Launch both balls at the same instant from a single release, minimum 3 ft elevation. One ball to each path.",
+      "path": "both",
+      "receivesFrom": null,
+      "handsTo": [
+        2,
+        3
+      ],
+      "basekit": {
+        "25mm pipe, 1m": 20,
+        "25mm three-way corner": 8,
+        "25mm four-way corner": 4,
+        "25mm tee": 8,
+        "25mm elbow 90°": 5,
+        "25mm coupler": 3,
+        "25mm end cap": 4,
+        "25mm saddle clamp": 6,
+        "32mm pipe, 1m": 2,
+        "32mm elbow 90° (short radius)": 4,
+        "32mm tee": 2,
+        "32mm end cap": 1,
+        "32mm coupler": 2,
+        "Cardboard blank (sheet)": 2,
+        "Zip ties (pack of 10)": 1,
+        "Duct tape": 1,
+        "Elastic cord set": 2,
+        "Dowel pack": 2,
+        "A3 sheets": 2,
+        "Permanent pen tip marker": 1,
+        "Rubber mallet": 1,
+        "Ball 12 mm": 1,
+        "Ball 25 mm": 1
+      }
+    },
+    {
+      "team": 2,
+      "challenge": "Raise Elevation",
+      "goal": "Bring the ball to a point 1.5 ft above launch height.",
+      "path": "A",
+      "receivesFrom": 1,
+      "handsTo": [
+        4
+      ],
+      "basekit": {
+        "25mm pipe, 1m": 18,
+        "25mm three-way corner": 6,
+        "25mm four-way corner": 3,
+        "25mm tee": 4,
+        "25mm elbow 90°": 2,
+        "25mm coupler": 3,
+        "25mm end cap": 3,
+        "25mm saddle clamp": 4,
+        "32mm pipe, 1m": 4,
+        "32mm elbow 90° (short radius)": 4,
+        "32mm tee": 1,
+        "32mm end cap": 1,
+        "32mm coupler": 2,
+        "Cardboard blank (sheet)": 4,
+        "Zip ties (pack of 10)": 4,
+        "Fevicol": 1,
+        "Scissors": 1,
+        "Duct tape": 1,
+        "A3 sheets": 2,
+        "Permanent pen tip marker": 1,
+        "Rubber mallet": 1,
+        "Ball 12 mm": 1
+      }
+    },
+    {
+      "team": 3,
+      "challenge": "Drop Elevation",
+      "goal": "Bring the ball to a point 2 ft below launch height.",
+      "path": "B",
+      "receivesFrom": 1,
+      "handsTo": [
+        5
+      ],
+      "basekit": {
+        "25mm pipe, 1m": 24,
+        "25mm three-way corner": 12,
+        "25mm four-way corner": 4,
+        "25mm tee": 8,
+        "25mm elbow 90°": 6,
+        "25mm coupler": 8,
+        "25mm end cap": 8,
+        "25mm saddle clamp": 5,
+        "32mm pipe, 1m": 4,
+        "32mm elbow 90° (short radius)": 2,
+        "32mm bend 45°": 3,
+        "32mm tee": 1,
+        "32mm end cap": 1,
+        "76mm split channel, 1m (SWR Type B)": 3,
+        "76mm split bend 90° (SWR Type B)": 2,
+        "Zip ties (pack of 10)": 1,
+        "A3 sheets": 2,
+        "Permanent pen tip marker": 1,
+        "Rubber mallet": 1,
+        "Ball 25 mm": 1
+      }
+    },
+    {
+      "team": 4,
+      "challenge": "Free Jump — Long",
+      "goal": "Open air gap of at least 1.5 ft, then catch and continue.",
+      "path": "A",
+      "receivesFrom": 2,
+      "handsTo": [
+        6
+      ],
+      "basekit": {
+        "25mm pipe, 1m": 14,
+        "25mm three-way corner": 6,
+        "25mm tee": 5,
+        "25mm elbow 90°": 3,
+        "25mm coupler": 3,
+        "25mm end cap": 3,
+        "25mm saddle clamp": 5,
+        "32mm pipe, 1m": 3,
+        "32mm elbow 90° (short radius)": 2,
+        "32mm tee": 1,
+        "32mm end cap": 1,
+        "76mm split channel, 1m (SWR Type B)": 1,
+        "76mm split bend 90° (SWR Type B)": 1,
+        "Cardboard blank (sheet)": 2,
+        "Zip ties (pack of 10)": 2,
+        "Dowel pack": 1,
+        "A3 sheets": 2,
+        "Permanent pen tip marker": 1,
+        "Rubber mallet": 1,
+        "Ball 12 mm": 1
+      }
+    },
+    {
+      "team": 5,
+      "challenge": "Free Jump — Short",
+      "goal": "Open air gap of 0.75 ft, then catch and continue.",
+      "path": "B",
+      "receivesFrom": 3,
+      "handsTo": [
+        7
+      ],
+      "basekit": {
+        "25mm pipe, 1m": 14,
+        "25mm three-way corner": 6,
+        "25mm tee": 5,
+        "25mm elbow 90°": 3,
+        "25mm coupler": 3,
+        "25mm end cap": 3,
+        "25mm saddle clamp": 4,
+        "32mm pipe, 1m": 2,
+        "32mm bend 90° (long radius)": 2,
+        "32mm Y junction": 2,
+        "32mm end cap": 1,
+        "76mm split channel, 1m (SWR Type B)": 1,
+        "Cardboard blank (sheet)": 8,
+        "Zip ties (pack of 10)": 4,
+        "Fevicol": 3,
+        "Scissors": 3,
+        "Duct tape": 3,
+        "A3 sheets": 2,
+        "Permanent pen tip marker": 1,
+        "Rubber mallet": 1,
+        "Ball 25 mm": 1
+      }
+    },
+    {
+      "team": 6,
+      "challenge": "Open Ended",
+      "goal": "No fixed specification. Adjust parameters for downstream teams.",
+      "path": "A",
+      "receivesFrom": 4,
+      "handsTo": [
+        8
+      ],
+      "basekit": {
+        "25mm pipe, 1m": 6,
+        "25mm three-way corner": 2,
+        "25mm tee": 2,
+        "25mm elbow 90°": 1,
+        "25mm coupler": 1,
+        "25mm end cap": 1,
+        "25mm saddle clamp": 2,
+        "32mm pipe, 1m": 1,
+        "32mm elbow 90° (short radius)": 1,
+        "32mm tee": 1,
+        "Cardboard blank (sheet)": 1,
+        "Zip ties (pack of 10)": 1,
+        "A3 sheets": 2,
+        "Permanent pen tip marker": 1,
+        "Rubber mallet": 1,
+        "Ball 12 mm": 1
+      }
+    },
+    {
+      "team": 7,
+      "challenge": "Open Ended",
+      "goal": "No fixed specification. Adjust parameters for downstream teams.",
+      "path": "B",
+      "receivesFrom": 5,
+      "handsTo": [
+        9
+      ],
+      "basekit": {
+        "25mm pipe, 1m": 8,
+        "25mm three-way corner": 10,
+        "25mm four-way corner": 3,
+        "25mm tee": 4,
+        "25mm elbow 90°": 4,
+        "25mm coupler": 6,
+        "25mm end cap": 2,
+        "25mm saddle clamp": 14,
+        "32mm bend 45°": 2,
+        "32mm tee": 2,
+        "32mm end cap": 2,
+        "32mm coupler": 6,
+        "32mm × 25mm reducer bush": 4,
+        "Split foam insulation, 1m": 2,
+        "Zip ties (pack of 10)": 6,
+        "A3 sheets": 2,
+        "Permanent pen tip marker": 1,
+        "Rubber mallet": 1,
+        "Ball 25 mm": 1
+      }
+    },
+    {
+      "team": 8,
+      "challenge": "Time Keeper",
+      "goal": "Both balls must reach the buckets at the same time. Owns Path A timing.",
+      "path": "A",
+      "receivesFrom": 6,
+      "handsTo": [
+        10
+      ],
+      "basekit": {
+        "25mm pipe, 1m": 16,
+        "25mm three-way corner": 6,
+        "25mm tee": 6,
+        "25mm elbow 90°": 4,
+        "25mm coupler": 3,
+        "25mm end cap": 4,
+        "25mm saddle clamp": 6,
+        "32mm pipe, 1m": 3,
+        "32mm bend 90° (long radius)": 1,
+        "32mm elbow 90° (short radius)": 2,
+        "32mm tee": 1,
+        "32mm end cap": 1,
+        "76mm split channel, 1m (SWR Type B)": 2,
+        "76mm split bend 90° (SWR Type B)": 1,
+        "Cardboard blank (sheet)": 3,
+        "Zip ties (pack of 10)": 3,
+        "Sensor module": 1,
+        "A3 sheets": 2,
+        "Permanent pen tip marker": 1,
+        "Rubber mallet": 1,
+        "Ball 12 mm": 1
+      }
+    },
+    {
+      "team": 9,
+      "challenge": "Time Keeper",
+      "goal": "Both balls must reach the buckets at the same time. Owns Path B timing.",
+      "path": "B",
+      "receivesFrom": 7,
+      "handsTo": [
+        10
+      ],
+      "basekit": {
+        "25mm pipe, 1m": 14,
+        "25mm three-way corner": 5,
+        "25mm tee": 5,
+        "25mm elbow 90°": 3,
+        "25mm coupler": 2,
+        "25mm end cap": 3,
+        "25mm saddle clamp": 5,
+        "32mm pipe, 1m": 3,
+        "32mm elbow 90° (short radius)": 3,
+        "76mm split channel, 1m (SWR Type B)": 1,
+        "Flexible borewell hose, 1m": 5,
+        "Split foam insulation, 1m": 4,
+        "Zip ties (pack of 10)": 2,
+        "Sensor module": 1,
+        "A3 sheets": 2,
+        "Permanent pen tip marker": 1,
+        "Rubber mallet": 1,
+        "Ball 25 mm": 1
+      }
+    },
+    {
+      "team": 10,
+      "challenge": "End Capture — Dead Drop",
+      "goal": "Both balls fall vertically into their buckets from the final outlet.",
+      "path": "both",
+      "receivesFrom": [
+        8,
+        9
+      ],
+      "handsTo": null,
+      "basekit": {
+        "25mm pipe, 1m": 20,
+        "25mm three-way corner": 7,
+        "25mm four-way corner": 3,
+        "25mm tee": 4,
+        "25mm elbow 90°": 3,
+        "25mm coupler": 2,
+        "25mm end cap": 3,
+        "25mm saddle clamp": 9,
+        "32mm pipe, 1m": 8,
+        "32mm bend 90° (long radius)": 1,
+        "32mm elbow 90° (short radius)": 2,
+        "32mm tee": 1,
+        "32mm end cap": 2,
+        "76mm split channel, 1m (SWR Type B)": 2,
+        "76mm split bend 90° (SWR Type B)": 2,
+        "Cardboard blank (sheet)": 3,
+        "Zip ties (pack of 10)": 2,
+        "Fevicol": 1,
+        "Duct tape": 1,
+        "Narrow bucket / paper cup": 2,
+        "A3 sheets": 2,
+        "Permanent pen tip marker": 1,
+        "Rubber mallet": 1,
+        "Ball 12 mm": 1,
+        "Ball 25 mm": 1
+      }
+    }
+  ]
+}

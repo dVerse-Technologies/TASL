@@ -1,0 +1,52 @@
+{
+  "currency": "Kasu",
+  "denominations": [
+    10,
+    20,
+    50,
+    100,
+    500
+  ],
+  "basekitPerTeam": {
+    "10": 10,
+    "20": 10,
+    "50": 8,
+    "100": 3,
+    "500": 2,
+    "totalCoins": 33,
+    "totalValue": 2000
+  },
+  "basekitAllTeams": {
+    "10": 100,
+    "20": 100,
+    "50": 80,
+    "100": 30,
+    "500": 20,
+    "totalCoins": 330,
+    "totalValue": 20000
+  },
+  "depotFloating": {
+    "10": 200,
+    "20": 150,
+    "50": 80,
+    "100": 10,
+    "500": 0,
+    "totalCoins": 440,
+    "totalValue": 10000,
+    "note": "no 500s at the counter; the depot only receives them"
+  },
+  "depotReserve": {
+    "10": 200,
+    "20": 150,
+    "50": 80,
+    "100": 20,
+    "500": 20,
+    "totalCoins": 470,
+    "totalValue": 21000
+  },
+  "mint": {
+    "totalCoins": 1240,
+    "totalValue": 51000
+  },
+  "circulation": 20000
+}

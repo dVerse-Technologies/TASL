@@ -5,7 +5,8 @@
       "name": "tasl-dashboard",
       "runtimeExecutable": "python",
       "runtimeArgs": ["run_server.py"],
-      "port": 8000
+      "port": 8000,
+      "autoPort": true
     }
   ]
 }

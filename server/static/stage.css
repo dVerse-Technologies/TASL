@@ -1,0 +1,225 @@
+/* The stage projector. Loads board.css first for the idle price board; this
+   file is only the full-screen news takeover that interrupts it.
+
+   Everything is sized in vh so it fills whatever the projector is set to. It
+   is designed to be read from the back of a hall, which mostly means: fewer
+   words, much bigger, and never rely on colour alone. */
+
+.flash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  flex-direction: column;
+  background: #0a0000;
+  /* Belt and braces: nothing inside the takeover may ever exceed the frame the
+     projector is showing. */
+  overflow: hidden;
+  --accent: #e0231f;
+}
+.flash.on { display: flex; }
+
+/* A short wipe-in. Long enough to read as "something just happened", short
+   enough that the headline is legible almost immediately.
+   The container fades but never scales - scaling a full-bleed fixed element
+   pushes its own edges past the viewport, which put the ticker below the
+   bottom of the screen for the first half second. The scale lives on the
+   content instead, and only ever grows INTO place from slightly under 1. */
+.flash.on .flash-inner { animation: fade-in 380ms ease-out; }
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.flash.on .slate { animation: settle 520ms cubic-bezier(0.2, 0.9, 0.2, 1); }
+@keyframes settle {
+  from { transform: scale(0.965); }
+  to   { transform: scale(1); }
+}
+
+.flash-inner {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* -------------------------------------------------------------- video mode */
+
+.flash-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+}
+.flash:not(.has-video) .flash-video { display: none; }
+
+/* When a clip is supplied it is the whole show - the authored graphics replace
+   the built-in slate rather than fighting it. Only the ticker stays. */
+.flash.has-video .slate { display: none; }
+
+/* -------------------------------------------------------------- slate mode */
+
+.slate {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 6vw;
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(255,255,255,0.10), transparent 60%),
+    linear-gradient(160deg, #1a0505 0%, #0a0000 55%, #14060a 100%);
+}
+
+.kicker {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 1.4vw;
+  padding: 1.1vh 2vw;
+  margin-bottom: 3vh;
+  background: var(--accent);
+  color: #fff;
+  font-size: clamp(16px, 3.4vh, 52px);
+  font-weight: 900;
+  letter-spacing: 0.34em;
+  animation: throb 1.05s ease-in-out infinite;
+}
+@keyframes throb { 50% { filter: brightness(1.45); } }
+
+.kicker .pip {
+  width: 1.8vh; height: 1.8vh;
+  border-radius: 50%;
+  background: #fff;
+  animation: blink 1.05s steps(2) infinite;
+}
+
+.headline {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(30px, 10.5vh, 165px);
+  line-height: 0.98;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  text-shadow: 0 0.5vh 4vh rgba(0, 0, 0, 0.8);
+}
+
+.subhead {
+  margin: 3vh 0 0;
+  color: #ffd8d2;
+  font-size: clamp(16px, 4vh, 62px);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+/* The price consequence, stated as a number. This is the line the participants
+   have to act on, so it gets its own band rather than living in the prose. */
+.impact {
+  margin-top: 4vh;
+  align-self: flex-start;
+  padding: 1.4vh 2.6vw;
+  border: 0.5vh solid var(--accent);
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-size: clamp(20px, 5.5vh, 88px);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+.impact .now {
+  color: var(--accent);
+}
+
+/* ------------------------------------------------------------------ ticker */
+
+.ticker {
+  flex: none;
+  display: flex;
+  align-items: stretch;
+  background: #000;
+  border-top: 0.4vh solid var(--accent);
+  overflow: hidden;
+}
+
+.ticker-tag {
+  flex: none;
+  display: grid;
+  place-content: center;
+  padding: 0 2vw;
+  background: var(--accent);
+  color: #fff;
+  font-size: clamp(13px, 2.6vh, 40px);
+  font-weight: 900;
+  letter-spacing: 0.2em;
+}
+
+.ticker-track {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 1.6vh 0;
+}
+
+.ticker-run {
+  display: inline-flex;
+  flex: none;
+  white-space: nowrap;
+  color: #fff;
+  font-size: clamp(14px, 3vh, 46px);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  animation: scroll-left 34s linear infinite;
+}
+.ticker-run span { padding-right: 6vw; }
+
+/* Two identical copies scroll past, the second starting where the first ends,
+   so the loop has no gap at the seam. */
+@keyframes scroll-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* --------------------------------------------------------- sound arm prompt */
+
+/* Browsers refuse to autoplay audio until the page has been clicked, which
+   would silently mute every news clip. So the projector is armed once during
+   setup and this never appears again. It is shown on top of the idle board,
+   not the flash, so it is dealt with before it matters. */
+.arm {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+  place-content: center;
+  text-align: center;
+  cursor: pointer;
+  background: rgba(11, 14, 20, 0.94);
+}
+.arm.on { display: grid; }
+.arm h2 {
+  margin: 0 0 2vh;
+  font-size: clamp(22px, 5vh, 66px);
+  letter-spacing: 0.05em;
+}
+.arm p {
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(13px, 2.2vh, 30px);
+  line-height: 1.5;
+}
+.arm .key {
+  display: inline-block;
+  margin-top: 3vh;
+  padding: 1.4vh 3vw;
+  border: 2px solid var(--live);
+  border-radius: 1vh;
+  color: var(--live);
+  font-size: clamp(14px, 2.6vh, 34px);
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}

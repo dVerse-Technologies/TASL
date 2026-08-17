@@ -1,0 +1,102 @@
+{
+  "_comment_source": "GENERATED FROM THE BOM. Every name, price, buyback and quantity below is copied from docs/gameplan/data/materials.json, which is itself generated from docs/gameplan/02-BOM/master-materials-and-mint.md. If a number here disagrees with that file, that file wins - fix it here, do not fix it there. The item_id values are the BOM's own ids, so the two can always be diffed line for line.",
+
+  "_comment_currency": "Kasu. Denominations 10 / 20 / 50 / 100 / 500 - coin CAD lives in openmarket/. round_to is 10 because that is the smallest coin: every displayed price must be payable with coins that physically exist.",
+  "currency": "Kasu",
+  "currency_symbol": "",
+  "round_to": 10,
+
+  "_comment_math": "COMPOUNDING, NOT ADDITIVE. Each fired event multiplies the CURRENT price and the result is rounded UP to the nearest 10 before the next event is applied:  war  price = ceil10(base x 1.2),  then tariff  price = ceil10(war x 1.3). Cumulative effect is x1.56, not x1.50. This reproduces the war/tariff columns in the BOM exactly - see server/market.py.",
+
+  "_comment_buyback": "Buyback is ALWAYS against the base price, never the live price. Without that, teams arbitrage the price shocks by buying early and selling into war pricing. fresh = unused and in original condition; modified = cut but still usable. Unusable material is bought back at nothing. Every base price is a multiple of 20, so modified is always payable in coins.",
+
+  "_comment_stock": "basekit = pieces already distributed across the ten team boxes. depot = pieces on the depot shelf. procure = the two added up, i.e. what was actually bought. Shown on the admin panel only - the depot board deliberately does not display stock, because a visible count invites teams to race each other for the last one.",
+
+  "_comment_groups": "Group order here is the order the depot board and the team guide books print in. Do not reorder without reprinting the books.",
+  "groups": [
+    { "group_id": "structural",      "name": "Structural",     "note": "25mm OD, 15kg" },
+    { "group_id": "pathway-closed",  "name": "Pathway closed",  "note": "32mm OD, 10kg (ID approx 28mm)" },
+    { "group_id": "pathway-open",    "name": "Pathway open",    "note": "76mm split, SWR Type B" },
+    { "group_id": "flex-and-friction", "name": "Flex & friction", "note": "" },
+    { "group_id": "consumables",     "name": "Consumables",     "note": "" },
+    { "group_id": "special",         "name": "Special",         "note": "" }
+  ],
+
+  "items": [
+    { "item_id": "25mm-pipe-1m",                    "group": "structural",       "name": "25mm pipe, 1m",                        "unit": "              ", "moq": 1, "base_price": 60,  "buyback": { "fresh": 60,  "modified": 30 },  "stock": { "basekit": 154, "depot": 231, "procure": 385 } },
+    { "item_id": "25mm-three-way-corner",           "group": "structural",       "name": "25mm three-way corner",                "unit": "each",           "moq": 1, "base_price": 60,  "buyback": { "fresh": 60,  "modified": 30 },  "stock": { "basekit": 68,  "depot": 102, "procure": 170 } },
+    { "item_id": "25mm-four-way-corner",            "group": "structural",       "name": "25mm four-way corner",                 "unit": "each",           "moq": 1, "base_price": 80,  "buyback": { "fresh": 80,  "modified": 40 },  "stock": { "basekit": 17,  "depot": 26,  "procure": 43 } },
+    { "item_id": "25mm-tee",                        "group": "structural",       "name": "25mm tee",                             "unit": "each",           "moq": 1, "base_price": 40,  "buyback": { "fresh": 40,  "modified": 20 },  "stock": { "basekit": 51,  "depot": 77,  "procure": 128 } },
+    { "item_id": "25mm-elbow-90",                   "group": "structural",       "name": "25mm elbow 90°",                  "unit": "each",           "moq": 1, "base_price": 40,  "buyback": { "fresh": 40,  "modified": 20 },  "stock": { "basekit": 34,  "depot": 51,  "procure": 85 } },
+    { "item_id": "25mm-coupler",                    "group": "structural",       "name": "25mm coupler",                         "unit": "each",           "moq": 1, "base_price": 20,  "buyback": { "fresh": 20,  "modified": 10 },  "stock": { "basekit": 34,  "depot": 51,  "procure": 85 } },
+    { "item_id": "25mm-end-cap",                    "group": "structural",       "name": "25mm end cap",                         "unit": "each",           "moq": 1, "base_price": 20,  "buyback": { "fresh": 20,  "modified": 10 },  "stock": { "basekit": 34,  "depot": 51,  "procure": 85 } },
+    { "item_id": "25mm-saddle-clamp",               "group": "structural",       "name": "25mm saddle clamp",                    "unit": "each",           "moq": 1, "base_price": 40,  "buyback": { "fresh": 40,  "modified": 20 },  "stock": { "basekit": 60,  "depot": 90,  "procure": 150 } },
+
+    { "item_id": "32mm-pipe-1m",                    "group": "pathway-closed",   "name": "32mm pipe, 1m",                        "unit": "              ", "moq": 1, "base_price": 200, "buyback": { "fresh": 200, "modified": 100 }, "stock": { "basekit": 30,  "depot": 45,  "procure": 75 } },
+    { "item_id": "32mm-coupler",                    "group": "pathway-closed",   "name": "32mm coupler",                         "unit": "each",           "moq": 1, "base_price": 60,  "buyback": { "fresh": 60,  "modified": 30 },  "stock": { "basekit": 10,  "depot": 30,  "procure": 40 } },
+    { "item_id": "32mm-elbow-90-short-radius",      "group": "pathway-closed",   "name": "32mm elbow 90° (short radius)",   "unit": "each",           "moq": 1, "base_price": 100, "buyback": { "fresh": 100, "modified": 50 },  "stock": { "basekit": 20,  "depot": 30,  "procure": 50 } },
+    { "item_id": "32mm-bend-90-long-radius",        "group": "pathway-closed",   "name": "32mm bend 90° (long radius)",     "unit": "each",           "moq": 1, "base_price": 300, "buyback": { "fresh": 300, "modified": 150 }, "stock": { "basekit": 4,   "depot": 32,  "procure": 36 } },
+    { "item_id": "32mm-bend-45",                    "group": "pathway-closed",   "name": "32mm bend 45°",                   "unit": "each",           "moq": 1, "base_price": 180, "buyback": { "fresh": 180, "modified": 90 },  "stock": { "basekit": 5,   "depot": 25,  "procure": 30 } },
+    { "item_id": "32mm-tee",                        "group": "pathway-closed",   "name": "32mm tee",                             "unit": "each",           "moq": 1, "base_price": 140, "buyback": { "fresh": 140, "modified": 70 },  "stock": { "basekit": 10,  "depot": 15,  "procure": 25 } },
+    { "item_id": "32mm-y-junction",                 "group": "pathway-closed",   "name": "32mm Y junction",                      "unit": "each",           "moq": 1, "base_price": 220, "buyback": { "fresh": 220, "modified": 110 }, "stock": { "basekit": 2,   "depot": 4,   "procure": 6 } },
+    { "item_id": "32mm-end-cap",                    "group": "pathway-closed",   "name": "32mm end cap",                         "unit": "each",           "moq": 1, "base_price": 40,  "buyback": { "fresh": 40,  "modified": 20 },  "stock": { "basekit": 10,  "depot": 15,  "procure": 25 } },
+    { "item_id": "32mm-25mm-reducer-bush",          "group": "pathway-closed",   "name": "32mm × 25mm reducer bush",        "unit": "each",           "moq": 1, "base_price": 120, "buyback": { "fresh": 120, "modified": 60 },  "stock": { "basekit": 4,   "depot": 12,  "procure": 16 } },
+
+    { "item_id": "76mm-split-channel-1m-swr-type-b","group": "pathway-open",     "name": "76mm split channel, 1m (SWR Type B)",  "unit": "              ", "moq": 1, "base_price": 200, "buyback": { "fresh": 200, "modified": 100 }, "stock": { "basekit": 10,  "depot": 15,  "procure": 25 } },
+    { "item_id": "76mm-split-bend-90-swr-type-b",   "group": "pathway-open",     "name": "76mm split bend 90° (SWR Type B)","unit": "each",           "moq": 1, "base_price": 240, "buyback": { "fresh": 240, "modified": 120 }, "stock": { "basekit": 6,   "depot": 9,   "procure": 15 } },
+
+    { "item_id": "flexible-borewell-hose-1m",       "group": "flex-and-friction","name": "Flexible borewell hose, 1m",           "unit": "              ", "moq": 1, "base_price": 300, "buyback": { "fresh": 300, "modified": 150 }, "stock": { "basekit": 5,   "depot": 11,  "procure": 16 } },
+    { "item_id": "split-foam-insulation-1m",        "group": "flex-and-friction","name": "Split foam insulation, 1m",            "unit": "              ", "moq": 1, "base_price": 120, "buyback": { "fresh": 120, "modified": 60 },  "stock": { "basekit": 6,   "depot": 10,  "procure": 16 } },
+
+    { "item_id": "cardboard-blank-sheet",           "group": "consumables",      "name": "Cardboard blank (sheet)",              "unit": "         ",      "moq": 1, "base_price": 120, "buyback": { "fresh": 120, "modified": 60 },  "stock": { "basekit": 23,  "depot": 67,  "procure": 90 } },
+    { "item_id": "zip-ties-pack-of-10",             "group": "consumables",      "name": "Zip ties (pack of 10)",                "unit": "          ",     "moq": 1, "base_price": 80,  "buyback": { "fresh": 80,  "modified": 40 },  "stock": { "basekit": 26,  "depot": 39,  "procure": 65 } },
+    { "item_id": "fevicol",                         "group": "consumables",      "name": "Fevicol",                              "unit": "per bottle",     "moq": 1, "base_price": 200, "buyback": { "fresh": 200, "modified": 100 }, "stock": { "basekit": 5,   "depot": 15,  "procure": 20 } },
+    { "item_id": "scissors",                        "group": "consumables",      "name": "Scissors",                             "unit": "per pair",       "moq": 1, "base_price": 240, "buyback": { "fresh": 240, "modified": 120 }, "stock": { "basekit": 4,   "depot": 16,  "procure": 20 } },
+    { "item_id": "duct-tape",                       "group": "consumables",      "name": "Duct tape",                            "unit": "per roll",       "moq": 1, "base_price": 160, "buyback": { "fresh": 160, "modified": 80 },  "stock": { "basekit": 6,   "depot": 34,  "procure": 40 } },
+    { "item_id": "elastic-cord-set",                "group": "consumables",      "name": "Elastic cord set",                     "unit": "per set",        "moq": 1, "base_price": 140, "buyback": { "fresh": 140, "modified": 70 },  "stock": { "basekit": 2,   "depot": 6,   "procure": 8 } },
+    { "item_id": "dowel-pack",                      "group": "consumables",      "name": "Dowel pack",                           "unit": "per pack",       "moq": 1, "base_price": 100, "buyback": { "fresh": 100, "modified": 50 },  "stock": { "basekit": 3,   "depot": 9,   "procure": 12 } },
+    { "item_id": "permanent-pen-tip-marker",        "group": "consumables",      "name": "Permanent pen tip marker",             "unit": "each",           "moq": 1, "base_price": 60,  "buyback": { "fresh": 60,  "modified": 30 },  "stock": { "basekit": 10,  "depot": 15,  "procure": 25 } },
+    { "item_id": "rubber-mallet",                   "group": "consumables",      "name": "Rubber mallet",                        "unit": "each",           "moq": 1, "base_price": 300, "buyback": { "fresh": 300, "modified": 150 }, "stock": { "basekit": 10,  "depot": 15,  "procure": 25 } },
+    { "item_id": "funnel",                          "group": "consumables",      "name": "Funnel",                               "unit": "each",           "moq": 1, "base_price": 200, "buyback": { "fresh": 200, "modified": 100 }, "stock": { "basekit": 0,   "depot": 8,   "procure": 8 } },
+    { "item_id": "narrow-bucket-paper-cup",         "group": "consumables",      "name": "Narrow bucket / paper cup",            "unit": "each",           "moq": 1, "base_price": 100, "buyback": { "fresh": 100, "modified": 50 },  "stock": { "basekit": 2,   "depot": 3,   "procure": 5 } },
+    { "item_id": "a3-sheets",                       "group": "consumables",      "name": "A3 sheets",                            "unit": "per sheet",      "moq": 1, "base_price": 20,  "buyback": { "fresh": 20,  "modified": 10 },  "stock": { "basekit": 20,  "depot": 30,  "procure": 50 } },
+
+    { "item_id": "sensor-module",                   "group": "special",          "name": "Sensor module",                        "unit": "each",           "moq": 1, "base_price": 200, "buyback": { "fresh": 200, "modified": 100 }, "stock": { "basekit": 2,   "depot": 3,   "procure": 5 } }
+  ],
+
+  "_comment_not_sold": "Facilitator-controlled, never on the depot shelf. Ball size is a God Mode lever, so no team can buy its way to a different one. Printed as a line on the depot board so the counter has something to point at when asked.",
+  "not_sold": [
+    { "item_id": "ball-12-mm", "name": "Ball 12 mm", "stock": { "basekit": 6, "depot": 0, "procure": 6 } },
+    { "item_id": "ball-25-mm", "name": "Ball 25 mm", "stock": { "basekit": 6, "depot": 0, "procure": 6 } }
+  ],
+
+  "_comment_events": "One entry per manually-triggered news event. price_pct is a percentage of the price ALREADY ON THE BOARD, applied in fire order, rounded up to round_to after each one. planned_at is a LABEL ONLY - nothing fires on a timer, the admin presses the button. video is optional: drop an .mp4 into server/static/media/ and name it here, and the stage plays it looped instead of the built-in slate. If the file is missing the slate is used, so a missing video can never black out the projector.",
+  "events": [
+    {
+      "event_id": "WAR",
+      "name": "War",
+      "planned_at": "1:30 mark",
+      "price_pct": 20,
+      "kicker": "BREAKING",
+      "headline": "WAR ANNOUNCED ON PANDORA",
+      "subhead": "Supply lines cut — raw material prices surge across all depots",
+      "ticker": "Shipping lanes closed · Steel and polymer futures spike · Depots report immediate repricing · Buyback unchanged at starting prices · Contractors advised to secure stock now",
+      "flash_seconds": 45,
+      "video": null,
+      "accent": "#e0231f"
+    },
+    {
+      "event_id": "TARIFF",
+      "name": "Tariff",
+      "planned_at": "2:00 mark",
+      "price_pct": 30,
+      "kicker": "BREAKING",
+      "headline": "TARIFF IMPOSED ON CONSTRUCTION MATERIALS",
+      "subhead": "A further levy lands on top of wartime pricing",
+      "ticker": "Emergency levy applied at all ports · Import duties raised without notice · Depot prices revised upward again · Buyback still against starting prices · No exemptions announced",
+      "flash_seconds": 45,
+      "video": null,
+      "accent": "#f0a020"
+    }
+  ]
+}

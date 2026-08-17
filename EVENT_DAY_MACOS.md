@@ -1,6 +1,12 @@
-# Event day — running the dashboard on the MacBook
+# Event day — running the server on a MacBook
 
-Development happens on the Windows PC. The **MacBook runs the live event**.
+> **The plan of record is that the Admin MiniPC runs the server**, not the
+> MacBook — see [`docs/EVENT_DAY_SCREENS.md`](docs/EVENT_DAY_SCREENS.md). This
+> document is the macOS host setup, kept for the case where a MacBook has to
+> take over. Everything below about the fixed IP applies to whichever machine
+> holds the server role.
+
+Development happens on the Windows PC.
 
 The good news: nearly all the Windows pain doesn't exist on macOS. There's no
 Public/Private network category, and no "Unidentified network" trap on a
@@ -147,8 +153,10 @@ if you never plan to use it. Ten minutes now versus a dead end on site.
    python3 run_server.py
    ```
 6. Open <http://localhost:8000>. Allow the firewall prompt if it appears.
-7. Power the nodes. Watch them turn ONLINE one at a time.
-8. Any that don't: open the **wrench icon**, top right.
+7. Bring up the other three screens — see
+   [`docs/EVENT_DAY_SCREENS.md`](docs/EVENT_DAY_SCREENS.md).
+8. Power the nodes. Watch them turn ONLINE one at a time.
+9. Any that don't: the diagnostics panel at the bottom of `/admin`.
 
 ---
 

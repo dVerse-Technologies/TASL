@@ -3,7 +3,19 @@ TASL laptop server.
 
 Two audiences:
   - ESP32 nodes, which POST JSON to /api/heartbeat and /api/event
-  - the browser dashboard, which loads / and then listens on /ws
+  - the browser screens, which load a page and then listen on /ws
+
+Four screens, one server, one WebSocket. Everything is in sync because there
+is only ever one copy of the state:
+
+  /         ball location and speed      MiniPC by the build space
+  /depot    live BOM prices              MiniPC at the materials depot
+  /stage    breaking-news projector      laptop on stage
+  /admin    triggers + diagnostics       MiniPC with the operator
+
+There are no logins. The screens are separated by URL, and the diagnostics
+that used to sit behind a wrench icon on the public dashboard now live only
+on /admin, so participants never see a station misbehaving.
 
 Run it with:   python run_server.py
 """
@@ -16,7 +28,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import Body, FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -29,26 +41,45 @@ STATIC_DIR = Path(__file__).resolve().parent / "static"
 store = Store()
 
 
+SCREEN_ROLES = ("live", "depot", "stage", "admin")
+
+
 class Hub:
     """Keeps the set of connected browsers and fans messages out to them."""
 
     def __init__(self) -> None:
-        self._clients: set[WebSocket] = set()
+        # ws -> role. Each page says what it is on connect, which is how the
+        # admin panel can answer "is the projector actually still plugged in"
+        # without anyone walking across the hall to look at it.
+        self._clients: dict[WebSocket, str] = {}
         self._lock = asyncio.Lock()
 
     async def join(self, ws: WebSocket) -> None:
         await ws.accept()
         async with self._lock:
-            self._clients.add(ws)
+            self._clients[ws] = "unknown"
 
     async def leave(self, ws: WebSocket) -> None:
         async with self._lock:
-            self._clients.discard(ws)
+            self._clients.pop(ws, None)
+
+    async def set_role(self, ws: WebSocket, role: str) -> None:
+        async with self._lock:
+            if ws in self._clients:
+                self._clients[ws] = role if role in SCREEN_ROLES else "unknown"
+
+    def screens(self) -> dict[str, int]:
+        """How many browsers of each kind are currently connected."""
+        counts = {role: 0 for role in SCREEN_ROLES}
+        counts["unknown"] = 0
+        for role in self._clients.values():
+            counts[role] = counts.get(role, 0) + 1
+        return counts
 
     async def broadcast(self, message: dict[str, Any]) -> None:
         payload = json.dumps(message)
         async with self._lock:
-            targets = list(self._clients)
+            targets = list(self._clients.keys())
         dead: list[WebSocket] = []
         for ws in targets:
             try:
@@ -60,10 +91,14 @@ class Hub:
         if dead:
             async with self._lock:
                 for ws in dead:
-                    self._clients.discard(ws)
+                    self._clients.pop(ws, None)
 
 
 hub = Hub()
+
+
+async def _push_screens() -> None:
+    await hub.broadcast({"type": "screens", "screens": hub.screens()})
 
 
 async def _offline_watchdog() -> None:
@@ -87,6 +122,22 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="TASL Marble Run", lifespan=lifespan)
+
+
+@app.middleware("http")
+async def no_store(request, call_next):
+    """
+    Nothing this server sends is ever worth caching.
+
+    Four machines run this in kiosk mode for a whole day. When something is
+    edited and a screen is reloaded, it must come back with the edit - "I
+    changed it and nothing happened" is not a puzzle anyone should be solving
+    twenty minutes before the event starts. There is no bandwidth argument
+    against it: everything is local and measured in kilobytes.
+    """
+    response = await call_next(request)
+    response.headers["Cache-Control"] = "no-store"
+    return response
 
 
 # ----------------------------------------------------------------- node API
@@ -173,28 +224,141 @@ async def run_reset() -> dict[str, Any]:
     return snap["run"]
 
 
+# ------------------------------------------------------------------- market
+#
+# Every one of these ends the same way: mutate, then broadcast the new market
+# to every screen at once. That single shared broadcast is the whole sync
+# story - the depot board, the stage board and the admin panel cannot show
+# different prices because they are all rendering the same message.
+
+async def _push_market() -> dict[str, Any]:
+    market = store.market.to_dict()
+    await hub.broadcast({"type": "market", "market": market})
+    return market
+
+
+@app.get("/api/market")
+async def get_market() -> dict[str, Any]:
+    return store.market.to_dict()
+
+
+@app.post("/api/market/fire/{event_id}")
+async def market_fire(event_id: str) -> JSONResponse:
+    if not store.market.fire_event(event_id):
+        return JSONResponse({"ok": False, "error": f"unknown event '{event_id}'"}, status_code=404)
+    return JSONResponse({"ok": True, "market": await _push_market()})
+
+
+@app.post("/api/market/unfire/{event_id}")
+async def market_unfire(event_id: str) -> JSONResponse:
+    if not store.market.unfire_event(event_id):
+        return JSONResponse({"ok": False, "error": f"'{event_id}' was not fired"}, status_code=409)
+    return JSONResponse({"ok": True, "market": await _push_market()})
+
+
+@app.post("/api/market/flash/{event_id}")
+async def market_flash(event_id: str) -> JSONResponse:
+    """Replay the news takeover on the projector without re-applying prices."""
+    if not store.market.flash_again(event_id):
+        return JSONResponse({"ok": False, "error": f"unknown event '{event_id}'"}, status_code=404)
+    return JSONResponse({"ok": True, "market": await _push_market()})
+
+
+# Deliberately NOT /api/market/flash/dismiss. That would be shadowed by the
+# {event_id} route above and quietly 404 - a dismiss button that does nothing
+# is exactly the failure you do not want to discover with a room watching.
+@app.post("/api/market/dismiss")
+async def market_flash_dismiss() -> dict[str, Any]:
+    store.market.dismiss_flash()
+    return {"ok": True, "market": await _push_market()}
+
+
+@app.post("/api/market/global")
+async def market_global(payload: dict[str, Any] = Body(...)) -> JSONResponse:
+    try:
+        pct = float(payload.get("pct", 0))
+    except (TypeError, ValueError):
+        return JSONResponse({"ok": False, "error": "pct must be a number"}, status_code=400)
+    store.market.set_global_pct(pct)
+    return JSONResponse({"ok": True, "market": await _push_market()})
+
+
+@app.post("/api/market/item/{item_id}")
+async def market_item(item_id: str, payload: dict[str, Any] = Body(...)) -> JSONResponse:
+    try:
+        pct = float(payload.get("pct", 0))
+    except (TypeError, ValueError):
+        return JSONResponse({"ok": False, "error": "pct must be a number"}, status_code=400)
+    if not store.market.set_item_pct(item_id, pct):
+        return JSONResponse({"ok": False, "error": f"unknown item '{item_id}'"}, status_code=404)
+    return JSONResponse({"ok": True, "market": await _push_market()})
+
+
+@app.post("/api/market/reset")
+async def market_reset() -> dict[str, Any]:
+    store.market.reset()
+    return {"ok": True, "market": await _push_market()}
+
+
 @app.websocket("/ws")
 async def ws_endpoint(ws: WebSocket) -> None:
     await hub.join(ws)
     try:
-        await ws.send_text(json.dumps(store.snapshot()))
+        snap = store.snapshot()
+        snap["screens"] = hub.screens()
+        await ws.send_text(json.dumps(snap))
         while True:
-            # We never expect input from the browser, but we must keep reading
-            # so the socket close is detected promptly.
-            await ws.receive_text()
+            # The only thing a browser ever sends is {"hello": "<role>"} on
+            # connect. We must keep reading regardless so the socket close is
+            # detected promptly.
+            raw = await ws.receive_text()
+            try:
+                msg = json.loads(raw)
+            except Exception:
+                continue
+            if isinstance(msg, dict) and "hello" in msg:
+                await hub.set_role(ws, str(msg["hello"]))
+                await _push_screens()
     except WebSocketDisconnect:
         pass
     except Exception:
         pass
     finally:
         await hub.leave(ws)
+        await _push_screens()
 
 
-# --------------------------------------------------------------------- page
+# -------------------------------------------------------------------- pages
+
+def _page(name: str) -> FileResponse:
+    # no-store: these machines run in kiosk mode for hours and are reloaded in
+    # a hurry when something goes wrong. Serving a stale cached page on a
+    # panic-reload would be a genuinely bad five minutes.
+    return FileResponse(STATIC_DIR / name, headers={"Cache-Control": "no-store"})
+
 
 @app.get("/")
 async def index() -> FileResponse:
-    return FileResponse(STATIC_DIR / "index.html")
+    """Ball location and speed. The screen by the build space."""
+    return _page("index.html")
+
+
+@app.get("/depot")
+async def depot() -> FileResponse:
+    """Live BOM prices. The kiosk at the materials depot."""
+    return _page("depot.html")
+
+
+@app.get("/stage")
+async def stage() -> FileResponse:
+    """Price board, interrupted full-screen by news flashes. The projector."""
+    return _page("stage.html")
+
+
+@app.get("/admin")
+async def admin() -> FileResponse:
+    """Triggers, manual pricing and diagnostics. Operator only."""
+    return _page("admin.html")
 
 
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")

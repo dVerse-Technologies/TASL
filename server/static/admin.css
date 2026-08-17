@@ -1,0 +1,308 @@
+/* The admin panel. Loads style.css first and reuses its palette, buttons and
+   the whole diagnostics block - the troubleshooting UI moved here unchanged
+   from the public dashboard, so participants no longer see it.
+
+   Sized in pixels, unlike the two boards. This one is read at arm's length on
+   a monitor by one person who is operating it, not from across a hall. */
+
+body.admin { overflow-y: auto; height: auto; min-height: 100%; }
+
+.admin-wrap {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 18px 22px 60px;
+  display: grid;
+  grid-template-columns: minmax(520px, 1.35fr) minmax(340px, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .admin-wrap { grid-template-columns: 1fr; }
+}
+
+/* Diagnostics runs the full width underneath both columns - the findings text
+   is prose and reads badly in a narrow column. */
+.col.span { grid-column: 1 / -1; }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.panel + .panel { margin-top: 18px; }
+
+.panel > h2 {
+  margin: 0;
+  padding: 12px 16px;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+  font-weight: 700;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel-2);
+}
+.panel .body { padding: 16px; }
+
+.hint {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ------------------------------------------------------------- triggers */
+
+.triggers { display: grid; gap: 14px; }
+
+.trigger {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: var(--panel-2);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px 16px;
+  align-items: center;
+}
+.trigger.is-fired { border-color: var(--hike, #ff6b3d); }
+
+.trigger-meta { min-width: 0; }
+.trigger-name {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+.trigger-sub {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+.trigger-sub b { color: var(--text); font-weight: 700; }
+
+/* Deliberately large. It is pressed once, in front of a room, by someone who
+   is also watching the stage - it must not be possible to miss or mis-hit. */
+.btn-fire {
+  min-width: 210px;
+  padding: 20px 26px;
+  font-size: 19px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #e0231f;
+  color: #fff;
+}
+.btn-fire:hover { filter: brightness(1.12); }
+.btn-fire:active { transform: translateY(1px); }
+
+.btn-fire.fired {
+  background: var(--panel);
+  color: var(--muted);
+  border: 1px solid var(--line);
+  cursor: default;
+}
+.btn-fire.fired:hover { filter: none; }
+
+.trigger-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+.trigger-actions .spacer { flex: 1; }
+.btn-sm {
+  padding: 7px 13px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  cursor: pointer;
+}
+.btn-sm:hover { border-color: var(--muted); }
+.btn-sm.danger { color: var(--bad); }
+.btn-sm:disabled { opacity: 0.35; cursor: default; }
+.btn-sm:disabled:hover { border-color: var(--line); }
+
+.fired-at { color: var(--muted); font-size: 12px; letter-spacing: 0.06em; }
+
+/* --------------------------------------------------------------- pricing */
+
+.total-row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.total-row .k { font-size: 12px; letter-spacing: 0.2em; color: var(--muted); }
+.total-row .v { font-size: 40px; font-weight: 900; }
+.total-row .v.up { color: #ff6b3d; }
+.total-row .v.down { color: var(--go); }
+.total-row .v.flat { color: var(--muted); }
+.total-row .spacer { flex: 1; }
+
+.global-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.global-row label { font-size: 12px; letter-spacing: 0.14em; color: var(--muted); }
+
+input.pct {
+  width: 92px;
+  padding: 9px 10px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+}
+input.pct:focus { outline: none; border-color: var(--live); }
+input.pct.sm { width: 74px; padding: 6px 8px; font-size: 14px; }
+
+/* ------------------------------------------------------------ item table */
+
+.item-table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+.item-table th {
+  text-align: left;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 8px 8px;
+  border-bottom: 1px solid var(--line);
+}
+.item-table th.num, .item-table td.num { text-align: right; }
+.item-table td {
+  padding: 7px 8px;
+  border-bottom: 1px solid rgba(42, 50, 68, 0.5);
+  font-size: 15px;
+}
+.item-table td.iname { font-weight: 600; }
+.item-table td.iunit { color: var(--muted); font-size: 12px; }
+.item-table td.ibase { color: var(--muted); font-size: 13px; }
+.item-table td.ilive { font-weight: 800; font-size: 17px; white-space: nowrap; }
+.item-table tr.up td.ilive { color: #ff6b3d; }
+.item-table tr.down td.ilive { color: var(--go); }
+
+/* Buyback and stock are constants that never move with the market, so they sit
+   back visually - the eye should land on BASE and LIVE, and find these only
+   when it goes looking. */
+.item-table td.ibuy,
+.item-table td.istock { color: var(--muted); font-size: 13px; white-space: nowrap; }
+
+/* The BOM's own groups, in the BOM's own order - the same headings, in the
+   same sequence, as the depot board and the printed team guide books. */
+.item-table tr.group-row th {
+  padding: 16px 8px 6px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--live);
+  font-weight: 700;
+  border-bottom: 1px solid var(--line);
+}
+.item-table tr.group-row:first-child th { padding-top: 8px; }
+.item-table tr.group-row .g-note {
+  color: var(--muted);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: none;
+}
+
+/* --------------------------------------------------------------- screens */
+
+.screens { display: grid; gap: 8px; }
+.screen-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-2);
+  font-size: 13px;
+}
+.screen-row .pip {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--bad);
+  flex: none;
+}
+.screen-row.up .pip { background: var(--go); }
+.screen-row .who { font-weight: 700; letter-spacing: 0.06em; }
+.screen-row .where { color: var(--muted); flex: 1; }
+.screen-row .n { color: var(--muted); font-variant-numeric: tabular-nums; }
+.screen-row a { color: var(--live); text-decoration: none; font-size: 12px; }
+.screen-row a:hover { text-decoration: underline; }
+
+/* --------------------------------------------------------------- history */
+
+.history { max-height: 340px; overflow-y: auto; }
+.hist-row {
+  display: flex;
+  gap: 10px;
+  padding: 7px 9px;
+  border-bottom: 1px solid rgba(42, 50, 68, 0.5);
+  font-size: 13px;
+}
+.hist-row .t { color: var(--muted); font-variant-numeric: tabular-nums; flex: none; }
+.hist-row .m { flex: 1; }
+.hist-row.fire  .m { color: #ff6b3d; font-weight: 700; }
+.hist-row.undo  .m { color: var(--warn); }
+.hist-row.reset .m { color: var(--muted); }
+.hist-row.flash .m { color: var(--live); }
+.history .empty { padding: 14px; color: var(--muted); font-size: 13px; }
+
+/* ------------------------------------------------------------ stage strip */
+
+.stage-strip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(224, 35, 31, 0.14);
+  font-size: 14px;
+}
+.stage-strip[hidden] { display: none; }
+.stage-strip .live-pip {
+  width: 11px; height: 11px; border-radius: 50%;
+  background: #e0231f;
+  animation: blink 1s steps(2) infinite;
+}
+.stage-strip .what { flex: 1; font-weight: 700; letter-spacing: 0.04em; }
+@keyframes blink { 50% { opacity: 0.2; } }
+
+/* ------------------------------------------------------------ diagnostics */
+
+/* The diagnostics markup is lifted verbatim from the old public dashboard, so
+   its styles come from style.css. Only the framing changes: it is a panel here
+   rather than a full-screen view behind a wrench icon. */
+#diag-list { padding: 0; }
+#diag-list .diag-node:first-child { border-top: none; }
+
+.diag-head-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel-2);
+}
+.diag-head-row h2 {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+  font-weight: 700;
+  flex: none;
+}
+.diag-head-row .diag-summary { display: flex; gap: 8px; flex: 1; }

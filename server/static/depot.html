@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Materials Depot - Live Prices</title>
+<link rel="stylesheet" href="/static/board.css">
+</head>
+<body data-role="depot">
+
+<div class="board" id="board">
+  <header class="board-head">
+    <span class="link-dot"></span>
+    <div class="board-title">
+      <h1>MATERIALS DEPOT</h1>
+      <div class="sub">LIVE PRICE LIST</div>
+    </div>
+
+    <!-- Top right, deliberately the loudest thing on the screen. -->
+    <div class="hike flat">
+      <span class="k">PRICES AT BASE</span>
+      <span class="v">&mdash;</span>
+    </div>
+  </header>
+
+  <!-- Filled by board.js: one block per BOM group, in the same order as the
+       "Parts at the depot" pages of the printed team guide books. The small
+       grey pair on each line is the buyback, unused / cut but usable. -->
+  <div class="board-body">
+    <div class="groups"></div>
+  </div>
+
+  <footer class="board-foot">
+    <span class="foot-note">NO MARKET EVENTS IN EFFECT</span>
+    <span class="spacer"></span>
+    <span class="foot-rule">BUYBACK IS AGAINST THE <b>STARTING PRICE</b> &mdash; UNUSED <b>FULL</b> &middot; CUT BUT USABLE <b>HALF</b> &middot; UNUSABLE <b>NOTHING</b></span>
+    <span class="spacer"></span>
+    <span class="foot-notsold"></span>
+    <span class="foot-currency"></span>
+  </footer>
+</div>
+
+<div class="offline-veil">
+  <div>
+    <h2>DEPOT BOARD OFFLINE</h2>
+    <p>Lost the link to the admin machine. Prices shown may be out of date.<br>
+       Reconnecting automatically&hellip;</p>
+  </div>
+</div>
+
+<script src="/static/bus.js"></script>
+<script src="/static/board.js"></script>
+<script>
+(() => {
+  "use strict";
+  const root = document.getElementById("board");
+  const setLink = Board.bindLink(root);
+
+  TASL.onState((s) => {
+    setLink(s.connected);
+    Board.render(s.market, root);
+  });
+})();
+</script>
+</body>
+</html>

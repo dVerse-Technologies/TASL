@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TASL - Admin</title>
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/admin.css">
+</head>
+<body class="admin" data-role="admin">
+
+<header class="topbar">
+  <div class="brand">
+    <span class="dot" id="link-dot"></span>
+    <h1>ADMIN &mdash; EVENT CONTROL</h1>
+  </div>
+
+  <div class="clock">
+    <span class="clock-label">RUN ELAPSED</span>
+    <span class="clock-value" id="elapsed">00:00.0</span>
+  </div>
+
+  <div class="controls">
+    <button id="btn-start" class="btn btn-go">START RUN</button>
+    <button id="btn-stop"  class="btn">STOP</button>
+    <button id="btn-reset" class="btn btn-quiet">RESET</button>
+  </div>
+</header>
+
+<!-- Only visible while the projector is showing a news takeover, so the
+     operator always knows what the room is currently looking at. -->
+<div class="stage-strip" id="stage-strip" hidden>
+  <span class="live-pip"></span>
+  <span class="what" id="stage-what"></span>
+  <button class="btn-sm" id="btn-dismiss">DISMISS FROM STAGE</button>
+</div>
+
+<div class="admin-wrap">
+
+  <div class="col">
+    <section class="panel">
+      <h2>NEWS TRIGGERS</h2>
+      <div class="body">
+        <p class="hint">
+          Nothing fires on a timer. Press a trigger and the price change lands on
+          every screen at once and the projector takes over. Each button needs a
+          second click to confirm, and firing twice never doubles the price change.
+        </p>
+        <div class="triggers" id="triggers"></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>PRICING</h2>
+      <div class="body">
+        <div class="total-row">
+          <span class="k">BOARD IS NOW</span>
+          <span class="v flat" id="total-pct">&mdash;</span>
+          <span class="spacer"></span>
+          <button class="btn-sm danger" id="btn-market-reset">RESET MARKET TO BASE</button>
+        </div>
+
+        <div class="global-row">
+          <label for="global-pct">MANUAL ADJUSTMENT, ALL ITEMS</label>
+          <input class="pct" id="global-pct" type="number" step="5" value="0">
+          <span class="hint" style="margin:0">%</span>
+          <button class="btn-sm" id="btn-global-apply">APPLY</button>
+          <button class="btn-sm" id="btn-global-zero">CLEAR</button>
+        </div>
+
+        <p class="hint" style="margin:14px 0 0">
+          Percentages <b>compound</b>, and each result is rounded <b>up</b> to the
+          nearest 10 before the next one is applied. War&nbsp;+20 then
+          Tariff&nbsp;+30 gives &times;1.56, not &times;1.50 &mdash; and 25mm pipe
+          goes 60&nbsp;&rarr;&nbsp;80&nbsp;&rarr;&nbsp;110, which is why individual
+          rows move by more than 56%. This is the model the BOM and the printed
+          team guide books are built on. Manual adjustments land last, on top of
+          whatever the events have already done.
+        </p>
+        <p class="hint" style="margin:8px 0 0">
+          <b>Buyback never moves.</b> It is unused&nbsp;/&nbsp;cut-but-usable
+          against the <b>base</b> price, whatever the board says at the time.
+          Unusable material is bought back at nothing.
+        </p>
+
+        <table class="item-table">
+          <thead>
+            <tr>
+              <th>MATERIAL</th>
+              <th>UNIT</th>
+              <th class="num">BASE</th>
+              <th class="num">BUYBACK</th>
+              <th class="num">KIT / DEPOT</th>
+              <th class="num">THIS ITEM %</th>
+              <th class="num">LIVE</th>
+            </tr>
+          </thead>
+          <tbody id="item-rows"></tbody>
+        </table>
+
+        <p class="hint" style="margin:12px 0 0" id="not-sold-note"></p>
+      </div>
+    </section>
+  </div>
+
+  <div class="col">
+    <section class="panel">
+      <h2>SCREENS</h2>
+      <div class="body">
+        <p class="hint">
+          What is currently connected to this server. A red pip means that
+          machine's browser is not talking to us &mdash; check its power, its
+          Wi-Fi, then reload its page.
+        </p>
+        <div class="screens" id="screens"></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>MARKET LOG</h2>
+      <div class="body" style="padding:0">
+        <div class="history" id="history"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="col span">
+    <section class="panel">
+      <div class="diag-head-row">
+        <h2>DIAGNOSTICS</h2>
+        <div class="diag-summary" id="diag-summary"></div>
+        <button id="btn-diag-clear" class="btn-sm">CLEAR COUNTERS</button>
+      </div>
+      <p class="hint" style="padding:12px 16px 0; margin:0">
+        This used to live on the dashboard by the build space. It is here only,
+        so participants never see a station misbehaving.
+      </p>
+      <div class="diag-list" id="diag-list"></div>
+    </section>
+  </div>
+
+</div>
+
+<script src="/static/bus.js"></script>
+<script src="/static/admin.js"></script>
+</body>
+</html>

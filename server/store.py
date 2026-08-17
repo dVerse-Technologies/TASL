@@ -17,6 +17,7 @@ from dataclasses import dataclass, field, asdict
 from pathlib import Path
 from typing import Any, Optional
 
+from server.market import Market
 from server.protocol import Heartbeat, NodeEvent
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -115,6 +116,12 @@ class Store:
         self.ball_at_order: int = 0  # 0 = not started; else the order of last node passed
 
         self.recent_events: list[dict[str, Any]] = []  # newest first, capped
+
+        # The simulated economy. It has its own lock and its own on-disk state;
+        # a run RESET deliberately does NOT touch it, because resetting the ball
+        # for another attempt has nothing to do with whether war has broken out.
+        self.market = Market()
+
         self._init_db()
 
     # ---------------------------------------------------------------- SQLite
@@ -359,6 +366,13 @@ class Store:
         }
 
     def snapshot(self) -> dict[str, Any]:
+        """
+        Full state for every screen. All four pages - live, depot, stage and
+        admin - open the same WebSocket and receive this same message, then
+        render the slice they care about. One payload is why the boards cannot
+        drift out of sync with each other.
+        """
+        market = self.market.to_dict()  # outside self._lock; Market locks itself
         with self._lock:
             return {
                 "type": "snapshot",
@@ -366,4 +380,5 @@ class Store:
                 "run": self.run_dict(),
                 "nodes": [n.to_dict() for n in sorted(self.nodes.values(), key=lambda x: x.order)],
                 "events": list(self.recent_events[:100]),
+                "market": market,
             }

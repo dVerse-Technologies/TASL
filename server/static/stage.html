@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TASL - Stage</title>
+<link rel="stylesheet" href="/static/board.css">
+<link rel="stylesheet" href="/static/stage.css">
+</head>
+<body data-role="stage">
+
+<!-- Idle state: the same price board the depot is showing, so the room can
+     always see what materials currently cost. -->
+<div class="board" id="board">
+  <header class="board-head">
+    <span class="link-dot"></span>
+    <div class="board-title">
+      <h1>MATERIALS MARKET</h1>
+      <div class="sub">LIVE PRICE LIST</div>
+    </div>
+    <div class="hike flat">
+      <span class="k">PRICES AT BASE</span>
+      <span class="v">&mdash;</span>
+    </div>
+  </header>
+
+  <!-- Same groups, same order, same stylesheet as the depot. The buyback
+       column is hidden here by board.css: across a hall it is unreadable
+       anyway, and the room does not need it - the depot counter does. -->
+  <div class="board-body">
+    <div class="groups"></div>
+  </div>
+
+  <footer class="board-foot">
+    <span class="foot-note">NO MARKET EVENTS IN EFFECT</span>
+    <span class="spacer"></span>
+    <span class="foot-rule">BUYBACK IS ALWAYS AGAINST THE <b>STARTING PRICE</b></span>
+    <span class="spacer"></span>
+    <span class="foot-currency"></span>
+  </footer>
+</div>
+
+<!-- The takeover. Hidden until an event fires. -->
+<div class="flash" id="flash">
+  <div class="flash-inner">
+    <video class="flash-video" id="flash-video" loop playsinline></video>
+
+    <div class="slate">
+      <div class="kicker"><span class="pip"></span><span id="fl-kicker">BREAKING</span></div>
+      <h1 class="headline" id="fl-headline"></h1>
+      <p class="subhead" id="fl-subhead"></p>
+      <div class="impact" id="fl-impact" hidden></div>
+    </div>
+
+    <div class="ticker">
+      <div class="ticker-tag" id="fl-tag">LIVE</div>
+      <div class="ticker-track">
+        <div class="ticker-run" id="fl-ticker"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="offline-veil">
+  <div>
+    <h2>STAGE OFFLINE</h2>
+    <p>Lost the link to the admin machine.<br>Reconnecting automatically&hellip;</p>
+  </div>
+</div>
+
+<!-- Clicked once during setup, then never seen again. -->
+<div class="arm on" id="arm">
+  <div>
+    <h2>STAGE READY</h2>
+    <p>Click anywhere to arm the projector.<br>
+       This is only needed so news clips can play with sound.</p>
+    <div class="key">CLICK TO ARM</div>
+  </div>
+</div>
+
+<script src="/static/bus.js"></script>
+<script src="/static/board.js"></script>
+<script src="/static/stage.js"></script>
+</body>
+</html>
